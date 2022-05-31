@@ -1,0 +1,170 @@
+\section{Hamilton图}
+\begin{theorem}
+    设图$G$的顶点数为$n(n > 3)$,如果图$G$中任意两个不相邻的顶点$u,v$满足
+    \begin{equation*}
+        d(u) + d(v) \ge n
+    \end{equation*}
+    那么$G$是H图.
+\end{theorem}
+
+\begin{lemma}
+对于单图$G$,如果$G$中有两个不相邻的顶点$u,v$满足
+\begin{equation*}
+    d(u) + d(v) \ge n
+\end{equation*}
+那么$G$是H图 $\iff G+uv$是H图
+\end{lemma}
+
+\begin{definition}[闭图]
+在$n$阶简单图中,若对满足$d(u)+d(v) \ge n$的任意一对顶点$u,v$都有$u \adj v$,则$G$是闭图.
+\end{definition}
+
+\begin{lemma}
+如果$G_1,G_2$是闭图,那么$G_1 \cap G_2$也是闭图.
+\end{lemma}
+
+\begin{definition}[图的闭包]
+称$\hat{G}$是$G$的闭包,如果它是包含$G$的极小闭图.
+\end{definition}
+
+\textit{这个概念的意思是,比$\hat{G}$含有更少顶点或边的图都不是闭图.闭图$G$的闭包就是其本身,而非闭图$G'$可以通过增加边的方式来构造出$\hat{G'}$}
+
+\begin{lemma}
+图$G$的闭包唯一.
+\end{lemma}
+
+\begin{theorem}[闭包定理]
+    $G$是H图 $\iff \hat{G}$ 是H图.
+\end{theorem}
+
+众所周知,$G$添加一些边$E$就可以变成$\hat{G}$. $\forall e \in E$使用引理1.1就可以得到这个定理.
+
+\begin{deduction}
+设$G$是$n>3$的单图,若$\hat{G}$是完全图,则$G$是H图.
+\end{deduction}
+
+\begin{theorem}[Chavatal度序列判定法]
+    设简单图$G$的度序列为$(d_1,d_2,\cdots,d_n)$(升序排列)且$n>3$.若$\forall k < \frac{n}{2}$都有$d_m > m$或者$d_n-m \ge n - m$,则$G$是H图.
+\end{theorem}
+
+\subsection{旅行商问题}
+\subsubsection{解决问题}
+在赋权图中寻找最小H圈的问题.解法如下:
+\begin{enumerate}[1)]
+    \item 随机取一个初始H圈$C = v_1 v_2 \cdots v_n$.
+    \item 如果存在$i,j$使得$w(v_i v_{i+1}) + w(v_j v_{j+1}) \ge w(v_i v_j) + w(v_{i+1} v_{j+1})$,那么用$v_i v_j,v_{i+1} v_{j+1}$取代$v_i v_{i+1},v_j v_{j+1}$.
+\end{enumerate}
+\subsubsection{找到问题下界}
+可以通过以下方法找到最小H圈的下界:
+\begin{enumerate}[1)]
+    \item 在图$G$中删掉任意顶点$v$得到图$G_1$;
+    \item 在$G_1$中找出一颗最小生成树$T$;
+    \item 在$v$的关联边中
+\end{enumerate}
+
+\section{匹配问题}
+\subsection{匹配与贝尔热问题}
+\begin{definition}[匹配]
+如果$M$是图$G$的边子集(无环),且$M$中任意两条边没有共同顶点,则称$M$为$G$的一个\textbf{匹配}.
+\end{definition}
+如果$G$中顶点$v$是匹配$M$的某条边的端点,则称其为$M$饱和点,否则称为$M$非饱和点.
+\begin{definition}[最大匹配]
+称$M$为$G$的最大匹配,如果$M$是$G$的包含边数最多的匹配.
+\end{definition}
+
+\begin{definition}[完美匹配]
+称$M$为$G$的完美匹配,如果$M$是$G$的匹配且$M$中的边邻接了$G$的所有顶点.
+\end{definition}
+
+\begin{definition}[交错路]
+设$M$为$G$的匹配,$G$中由属于$M$以及不属于$M$的边交错形成的路称为$M$交错路.特别地,如果$M$交错路的起终点都是$M$非饱和点,这条路还称作$M$可扩路.
+\end{definition}
+
+\begin{theorem}[Berge]
+    $G$的匹配$M$是最大匹配,当且仅当$G$不包含$M$可扩路.
+\end{theorem}
+
+\subsection{偶图的匹配与覆盖}
+
+\begin{theorem}[Hall定理]
+设$G$是$X,Y$二部图,则存在饱和$X$每个顶点的匹配的充要条件是:
+
+$\forall S \subseteq X$都有$\#N(S) \ge \#S$.其中$N(S)$是$S$邻接点的集合.
+\end{theorem}
+
+如果找到一个$S$元素个数多雨$N(S)$,那么$X$不可能全部饱和.如果$G$是$k$正则图,那么$G$存在完美匹配.
+
+\begin{definition}[点覆盖]
+$K$为$G$的一个顶点子集,如果$G$的每条边都至少有一个端点在$K$中,则$K$是$G$的覆盖.点最少的点覆盖称为最小点覆盖,其包含的点数称为$G$的覆盖数,记为$\alpha(G)$
+\end{definition}
+
+\begin{theorem}
+设$M$是$G$的匹配, $K$是$G$的覆盖,如果$\#M = \#K$,则$M$是最大匹配, $K$是最小覆盖.
+\end{theorem}
+
+\textit{\textbf{证明} \hspace{1em} 由匹配和覆盖的定义:
+\begin{equation*}
+    \#M \le \#M^* \le \#K^* \le \#K
+\end{equation*}
+}
+
+\begin{theorem}[K\"{o}nig]
+在二部图中,最大匹配的边数等于最小覆盖的顶点数.
+\end{theorem}
+\textit{一个等价展示:二部图的邻接矩阵(布尔)能够覆盖所有``1''的线的最少数目等于任意两个``1''全都不在同一条线上的``1''的最大数目.
+}
+
+\subsection{托特定理}
+
+\begin{theorem}
+图$G$存在完美匹配当且仅当, $\forall S \subset V(G)$有
+\begin{equation*}
+    o(G-S) \le \#S
+\end{equation*}
+其中, $o(G)$代表$G$的分支数目.
+\end{theorem}
+
+\begin{definition}[交错树]
+设$G=(X,Y)$,$M$是$G$的匹配, $u$是$M$非饱和点.称树$H$是 $G$ 的扎根于顶点 $u$ 的 $M$ 交错树,如果:
+
+\begin{itemize}
+    \item $u \in V(H)$
+    \item $\forall v \in V(H):
+    (u,v)$路是 $M$ 交错路.
+\end{itemize}
+\end{definition}
+
+\subsection{匈牙利算法}
+用于求出二部图的完美匹配.设 $M$ 是初始匹配.
+
+\begin{enumerate}[(a)]
+    \item $S := \varnothing, T := \varnothing$
+    \item 如果 $X - S$ 已经 $M$ 饱和则停止;否则设 $u \in X-S$的一个非饱和点.
+\end{enumerate}
+
+\subsection{赋权匈牙利算法}
+
+\begin{definition}[\textbf{相等子图}]
+设 $l$ 是赋权完全二部图 $G = (X,Y)$ 的可行顶点标号,令:
+$$E_l = \{xy \in E(G) \mid  l(x)+l(y)=w(xy)\}$$
+称 $G_l = G[E_l]$ 为 $G$ 的对应 $l$ 的相等子图.
+\end{definition}
+
+\begin{theorem}
+设 $l$ 是赋权完全二部图 $G = (X,Y)$ 的可行顶点标号, 若相等子图 $G_l$ 有完美匹配 $M^*$, 则 $M^*$ 是 $G$ 的最优匹配.
+\end{theorem}
+
+Kuhn提出了一种顶点标号修改策略,找到了最优匹配好算法:
+
+\begin{enumerate}[(a)]
+    \item 给定初始顶点标号 $l$, 在 $G_l$ 中任选一个匹配 $M$.
+    \item 如果 $M$ 是饱和的,则 $M$ 是最优匹配.否则令 $u$ 为 $M$ 的一个非饱和点, 设 $S := \{u\}, T := \varnothing$
+    \item 如果 $N_{G_l}(S) \supset T$ 转到(e),否则设 
+    $$\alpha_l = \min_{x \in S, y \not \in T}\{l(x)+l(y)-w(xy)\}$$
+    并更新标号:
+    $$\hat{l} = \begin{cases}
+    l(v) - \alpha_l \when{v \in S} \\
+    l(v) + \alpha_l \when{v \in T} \\
+    l(v) \when{\text{其它}}
+    \end{cases}$$
+\end{enumerate}

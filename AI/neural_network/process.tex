@@ -1,0 +1,128 @@
+\subsection{神经网络算法原理}
+\textbf{神经网络}采用了仿生学的思想,通过模拟生物神经网络的结构和功能来实现建模.此次实验将完成多层感知机,输入数据将通过4个\textbf{全连接层}以及4个\textbf{激活函数层}(3个ReLU层以及一个softmax层)之后得到输出数据.训练数据(以及测试数据)将通过\textbf{正向传播}得到相应的分类,而预测值与真实值的差异可以使用\textbf{损失函数}估算,最后通过\textbf{反向传播}得到各个变量的梯度,按照一定的\textbf{学习率}减去梯度完成学习.
+
+\subsubsection{全连接层}
+该层会接受一个向量 $\boldsymbol{x}$ 作为输入,并将其按照$n$组权重 $\boldsymbol{W}$ 计算出$n$维向量 $\boldsymbol{y}$作为输出,有时输出向量还会加上偏置向量 $\boldsymbol{b}$ 进行调整.
+很容易可以得到:
+$$\boldsymbol{y} = \boldsymbol{x} \cdot \boldsymbol{W} + \boldsymbol{b}$$
+
+\subsubsection{激活函数层}
+该层会接收一个向量输入,并对单个元素分别应用激活函数再输出.激活函数是非线性函数,用于在以线性计算为主的神经网络中引入非线性因素,便于模拟非线性函数.
+
+本次试验中用到的激活函数:
+\begin{itemize}
+    \item ReLU函数:很简单的非线性函数,能够最大程度上突出非线性特征.
+    $$ \mathrm{ReLU}(x_i) = \max\{0, x_i\}$$
+    \item softmax函数: 由于本次试验是分类问题,因此采用了这个可以用来扩大特征的激活函数.
+    $$ \mathrm{softmax}(x_i) = \frac{\exp(x_i)}{\sum_k \exp(x_k)}$$
+\end{itemize}
+
+\subsubsection{损失函数}
+与最后的softmax层相对应,损失函数采用交叉熵.对于 $n$ 维的真实值向量 $\boldsymbol{y}$ 以及预测值向量 $\boldsymbol{\hat{y}}$,损失函数为:
+$$L = -\frac{1}{n} \sum_{i=1}^n y_i \ln \hat{y}_i$$
+
+\subsection{公式推导}
+
+\subsubsection{全连接层的正向传播}
+在实际训练的过程中会将很多训练数据拼接为一个矩阵输入,所以全连接层具有输入数据 $\boldsymbol{X}_{p \times m}$, 输出数据 $\boldsymbol{Y}_{p \times n}$, 权值矩阵 $\boldsymbol{W}_{m \times n}$ 以及偏置向量 $\boldsymbol{b}_{1 \times n}.$
+
+从单个数据正向传播公式容易推广出多个数据的公式:
+
+$$\boldsymbol{Y} = \boldsymbol{XW} + \boldsymbol{1}_{p \times n} \boldsymbol{b}$$
+
+\subsubsection{激活层的正向传播}
+
+由于ReLU是一元函数,所以容易推出:
+
+$$
+\boldsymbol{Y} = [y_{i,j}] =  [\max\{0,x_{i,j}\}]
+$$
+
+同理可以推出softmax函数:
+$$
+\boldsymbol{\hat{Y}} = [y_{i,j}] = \left[\frac{\exp(x_{i,j})}{\sum_k \exp(x_{i,k})}\right]
+$$
+
+不过在实际编程中 $\exp(x_{i,j})$ 可能会过大造成 ``指数发散''的问题, 因此在实际使用时一般令其减去最大值再用指数函数处理:
+$$
+\boldsymbol{\hat{Y}} = [y_{i,j}] = \left[\frac{\exp(x_{i,j} - \max_t x_{i,t})}{\sum_k \exp(x_{i,k} - \max_t x_{i,t})}\right]
+$$
+
+\subsubsection{softmax层反向传播}
+对于真实值矩阵 $\boldsymbol{Y}$ 以及预测值矩阵 $\boldsymbol{\hat{Y}}$(型号都为 $m \times n$) 由损失函数公式容易得到:
+
+$$
+\pder{L}{\hat{y}_{i,j}} = -\frac{y_{i,j}}{n\hat{y}_{i,j}}
+$$
+
+再已知softmax层输入矩阵 $\boldsymbol{X}$ 根据softmax函数求偏导:
+$$
+\pder{\hat{y}_{i,k}}{x_{i,j}} = \pder{}{x_{i,j}}\frac{\exp(x_{i,k })}{\sum_l \exp(x_{i,l})} = \begin{cases}
+-\hat{y}_{i,j}\hat{y}_{i,k} \when{k \ne i} \\
+-\hat{y}_{i,j}\hat{y}_{i,k} + \hat{y}_{i,j} \when{k = i}
+\end{cases}
+$$
+
+因此可以得出:
+$$
+\pder{L}{x_{i,j}} =  \sum_k \pder{L}{\hat{y}_{i,k}} \pder{\hat{y}_{i,k}}{x_{i,j}} = \frac{1}{n} \sum_k \frac{y_{i,k}}{\hat{y}_{i,k}}\hat{y}_{i,k}\hat{y}_{i,j} - \frac{1}{n} y_{i,j} = \frac{1}{n}(\sum_k y_{i,k} \hat{y}_{i,j} - y_{i,j})
+$$
+
+由于真实值同一行中只有一个元素是1,其余都是0, 所以 $\forall k: y_{i,k}$ 只有一个为1.所以,
+$$
+\pder{L}{x_{i,j}} = \frac{1}{n}(\hat{y}_{i,j} - y_{i,j})
+$$
+
+扩展为梯度:
+$$
+\nabla_{\boldsymbol{X}} L = \left[\pder{L}{x_{i,j}}\right] = \frac{1}{n}(\boldsymbol{\hat{Y}-Y})
+$$
+
+\subsubsection{ReLU层的反向传播}
+
+由于ReLU是分段函数,所以:
+\begin{align*}
+    \pder{y}{x} = \begin{cases}
+    0 \when{x<0} \\
+    1 \when{x \ge 0}
+    \end{cases} \implies
+    \pder{L}{x_{i,j}} = \begin{cases}
+    0 \when{x<0} \\
+    \pder{L}{y_{i,j}} \when{x \ge 0}
+    \end{cases} \implies
+    \nabla_{\boldsymbol{X}} L = \begin{cases}
+    0 \when{x<0} \\
+    \nabla_{\boldsymbol{Y}} L \when{x \ge 0}
+    \end{cases}
+\end{align*}
+
+
+\textit{注: ReLU在 $x=0$ 处并不连续,为了方便计算此处取右导数}.
+
+\subsubsection{全连接层的反向传播}
+由公式可以得出: 已知 $y_{i,j} = \sum_k x_{i,k}w_{k,j} + b_{j}$:
+
+首先是对权重的梯度,
+$$
+\nabla_{\boldsymbol{W}} L = \left[\pder{L}{w_{k,j}}\right] = \bracket{\sum_i \pder{L}{y_{i,k}} \pder{y_{i,k}}{w_{k,j}}} = \bracket{\sum_i \pder{L}{y_{i,k}} x_{i,k}} = \bracket{\sum_i x^\T_{k,i}\pder{L}{y_{i,k}}} = \boldsymbol{X}^\T (\nabla_{\boldsymbol{Y}} L)
+$$
+
+其次是对偏置的梯度:
+$$
+\nabla_{\boldsymbol{b}} L = \bracket{\pder{L}{b^\T_{1,j}}}^\T = \bracket{\sum_i \pder{L}{y_{i,j}}}^\T = \bracket{\sum_i 1_{1,i} \pder{L}{y_{i,j}}}^\T = ((\boldsymbol{1}_{1 \times i}) (\nabla_{\boldsymbol{Y}} L))^\T
+$$
+
+\textit{注: 其实就是对 $\nabla_{\boldsymbol{Y}} L$ 进行逐行求和得到的向量}
+
+最后是对输入的梯度:
+$$
+\nabla_{\boldsymbol{X}} L = \bracket{\pder{L}{x_{i,j}}} = \bracket{\sum_j \pder{L}{y_{i,j}} \pder{y_{i,j}}{x_{i,k}}} = \bracket{\sum_j \pder{L}{y_{i,j}} w_{k,j}} = \bracket{\sum_j  \pder{L}{y_{i,j}} w^\T_{j,k}} = (\nabla_{\boldsymbol{Y}} L) \boldsymbol{W}^\T 
+$$
+
+\subsubsection{参数学习}
+给定学习率 $\eta$ 每次反向传播之后全连接层的权重矩阵和偏置向量都会进行学习:
+$$
+\boldsymbol{W}' = \boldsymbol{W} - \eta \nabla_{\boldsymbol{W}} L, \quad \boldsymbol{b}' = \boldsymbol{b} - \eta \nabla_{\boldsymbol{b}} L
+$$
+
+

@@ -1,0 +1,21 @@
+\subsection{系统调用}
+编写一个系统调用，然后在进程中调用之，根据结果回答以下问题。
+\begin{itemize}
+    \item 展现系统调用执行结果的正确性，结果截图并并说说你的实现思路。
+    \item 请根据gdb来分析执行系统调用后的栈的变化情况。
+    \item 请根据gdb来说明TSS在系统调用执行过程中的作用。
+\end{itemize}
+\subsection{\texttt{fork()}的奥秘}
+实现\texttt{fork()}函数，并回答以下问题。
+\begin{itemize}
+    \item 请根据代码逻辑和执行结果来分析\texttt{fork()}实现的基本思路。
+    \item 从子进程第一次被调度执行时开始，逐步跟踪子进程的执行流程一直到子进程从\texttt{fork()}返回，根据gdb来分析子进程的跳转地址、数据寄存器和段寄存器的变化。同时，比较上述过程和父进程执行完\texttt{ProgramManager::fork()}后的返回过程的异同。
+    \item 请根据代码逻辑和gdb来解释\texttt{fork()}是如何保证子进程的\texttt{fork()}返回值是0，而父进程的\texttt{fork()}返回值是子进程的pid。
+\end{itemize}
+\subsection{哼哈二将\texttt{exit()}\&\texttt{wait()}}
+实现\texttt{wait()}函数和\texttt{exit()}函数，并回答以下问题。
+\begin{itemize}
+    \item 请结合代码逻辑和具体的实例来分析\texttt{exit()}的执行过程。
+    \item 请分析进程退出后能够隐式地调用\texttt{exit()}和此时的\texttt{exit()}返回值是0的原因。
+    \item 如果一个父进程先于子进程退出，那么子进程在退出之前会被称为孤儿进程。子进程在退出后，从状态被标记为\texttt{DEAD}开始到被回收，子进程会被称为僵尸进程。请对代码做出修改，实现回收僵尸进程的有效方法。
+\end{itemize}

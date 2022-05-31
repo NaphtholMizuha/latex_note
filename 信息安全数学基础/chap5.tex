@@ -1,0 +1,154 @@
+\section{原根与指标}
+
+\subsection{原根}
+
+\begin{definition}[指数]
+    设 $m \in \Z, m > 1, a \perp m$,称使得
+    $$a^e \equiv 1 \pmod{m}$$
+    的最小正整数 $e$ 为 $a$ 模 $m$ 的\textbf{指数}(阶), 记为 $\ord{m}{a}$
+\end{definition}
+
+\begin{definition}[原根]
+    若 $\ord{m}{a} = \varphi(m)$, 则 $a$ 称为 $m$ 的\textbf{原根}.
+\end{definition}
+
+\begin{theorem}
+    设 $m \in \Z(m>1),a \perp m$. 整数 $d$ 满足 $a^d \equiv 1 \pmod{m} \iff \ord{m}{a} \mid d$.
+\end{theorem}
+
+根据这个定理,指数一定是 $\varphi(m)$ 的因子,只需要在这些数里面找就行了.
+
+\begin{theorem}
+    设 $m \in \Z(m>1),a \perp m$. 如果 $n \mid m$,则 $\ord{n}{a} \mid \ord{m}{a}$.
+\end{theorem}
+
+\begin{theorem}
+    设 $m \in \Z(m>1),a \perp m$. 如果 $a \equiv b \pmod{m}$,则 $\ord{m}{a} = \ord{m}{b}$.
+\end{theorem}
+
+\begin{theorem}
+    设 $m \in \Z(m>1),a \perp m$. 如果 $ab \equiv 1 \pmod{m}$,则 $\ord{m}{a} = \ord{m}{b}$.
+\end{theorem}
+
+\begin{theorem}
+    设 $m \in \Z(m>1),a \perp m$. 则 
+    $$a^0(=1),a^1,\cdots,a^{\ord{m}{a}-1}$$
+    模 $m$ 互不同余.
+\end{theorem}
+
+\textit{如果恰好 $\ord{m}{a} = \varphi(m)$, 则 $a^0, a^1, \cdots, a^{\ord{m}{a}-1}$ 构成一个简化剩余系.}
+
+\begin{theorem}
+    设 $m \in \Z(m>1),a \perp m$. $a^k \equiv a^l \pmod{m} \iff k \equiv l \pmod{\ord{m}{a}}$.
+\end{theorem}
+
+\begin{theorem}
+    设 $m \in \Z(m>1),a \perp m$, $k$ 是非负整数. 则, 
+    $$\ord{m}{a^k} = \frac{\ord{m}{a}}{\gcd(\ord{m}{a},k)}$$
+\end{theorem}
+
+\begin{theorem}
+    设 $m \in \Z(m>1), k \in \Z^+$. $a$ 是 $m$ 的原根 $\iff \gcd(k,\varphi(m))=1$.
+\end{theorem}
+
+\begin{theorem}
+    设 $m \in \Z(m>1)$. 如果 $m$ 有原根,则原根个数是 $\varphi(\varphi(m))$.
+\end{theorem}
+
+\begin{theorem}
+    设 $m \in \Z(m>1), a \perp m, b \perp m$. 则,
+    $$\ord{m}{ab} = \ord{m}{a} \cdot \ord{m}{b} \iff a \perp b.$$
+\end{theorem}
+
+\begin{theorem}
+    设 $m \in \Z(m>1), a \perp m, b \perp m$. 则 $\exists c$ 使得
+    $$\ord{m}{c} = \lcm(\ord{m}{a},\ord{m}{b}).$$
+\end{theorem}
+
+\textit{更一般地, $\exists g$ 使得 $\ord{m}{g} = \lcm(\ord{m}{a_1}, \cdots, \ord{m}{a_k}), \quad 2 \le k \le \varphi(m).$}
+
+\begin{theorem}
+    设 $m,n \in \Z(m>1), a,m,n$两两互素. 则 
+    $$\ord{mn}{a} = \lcm(\ord{m}{a},\ord{n}{a}).$$
+\end{theorem}
+
+\begin{theorem}
+    设 $m,n \in \Z(m>1,n>1,m\perp n),a_1 \perp mn, a_2 \perp mn$两两互素. 则 $\exists a:$
+    $$\ord{mn}{a} = \lcm(\ord{m}{a_1},\ord{n}{a_2}).$$
+    其中 $a$ 是同余方程组 $x \equiv a_1 \pmod{m}, x \equiv a_2 \pmod{n}$的解.
+\end{theorem}
+
+\begin{theorem}
+    $p$ 是素数 $\implies p$ 有原根.
+\end{theorem}
+
+\begin{theorem}[原根判定]
+    设$p$ 是奇素数, $q_i(1 \le i \le s)$都是 $p-1$ 的不同的素因数. 则 $g$ 是模 $p$ 原根 iff
+    $$g^{\frac{p-1}{q_i}} \ne 1 \pmod{p}, \quad 1 \le i \le s.$$
+\end{theorem}
+
+\begin{theorem}
+    设 \(a,m,n\) 两两互素, 
+\end{theorem}
+
+\begin{theorem}
+    模 \(m\) 存在原根当且仅当 \(m=1 \cnor 2 \cnor 4 \cnor p^\alpha \cnor 2p^\alpha\).
+    其中 \(\alpha\) 是奇素数.
+\end{theorem}
+
+\begin{theorem}
+    \(g\) 是模 \(p^{\alpha + 1}\) 的原根 \(\implies\)
+    \(g\) 是模 \(p^{\alpha}\) 的原根. \(p\) 是奇素数.
+\end{theorem}
+
+\begin{theorem}
+    如果 \(g\) 是 \(p^\alpha\) 的原根, 则
+    \(\ord{p^{\alpha+1}}{g} = \varphi(p^\alpha) \cnor \ord{p^{\alpha+1}}{g} = \varphi(p^{\alpha+1})\)
+\end{theorem}
+
+\begin{theorem}
+    设 \(g\) 是模奇素数 \(p\) 的原根, 且 \(g\) 满足
+    \(g^{p-1}=1+rp\) 且 \(p \nmid r\), 则 \(g\) 是
+    模 \(p^\alpha\)的原根.
+\end{theorem}
+
+\begin{theorem}
+    如果 \(g'\) 是模奇素数 \(p\) 的原根, 则 \(g = g' + kp\)
+    都是 \(p\) 的原根.
+\end{theorem}
+
+通过原根找原根:
+\begin{itemize}
+    \item \(p\) 为奇素数,则模 \(p\) 的素数必然存在, 如 \(g\).
+    \item 可以构造一个模 \(p\) 的原根 \(\tilde{g}\)
+\end{itemize}
+
+\subsection{指标}
+
+\begin{definition}[指标]
+    对于整数 \(r\) 满足 \(0 < r \le \varphi(m)\), 如果
+    \[g^r \equiv a \pmod{m}\]
+    则称 \(r\) 为\textbf{以 \(g\) 为底的 \(a\) 模 \(m\) 的指标}.
+    记为 \(\ind_g a\).也可以称为\textbf{离散对数}, 记为 \(\log_g a\).
+\end{definition}
+
+\begin{theorem}[指数-对数互换]
+    设 \(m\) 是大于1的整数, \(g\) 是模 \(m\) 的原根. 如果
+    \(g^s \equiv a \pmod{m}\), 则 
+    \[s \equiv \ind_g a \pmod{\varphi(m)}\]
+\end{theorem}
+
+\begin{theorem}
+    \[\ind_g(a_1 \cdots a_n) = \ind_g a_1 + \cdots + \ind_g a_n\]
+\end{theorem}
+
+\begin{theorem}
+    设 \(g\) 是模 \(m\) 的原根. 在模 \(m\) 的简化剩余系中,
+    指数为 \(e\) 的整数个数为 \(\varphi(e)\).
+\end{theorem}
+
+\textit{特别地: \((\Z/m\Z)^*\) 的原根个数为 \(\varphi(\varphi(m))\)}
+
+\begin{theorem}[\(n\)次同余方程]
+    
+\end{theorem}

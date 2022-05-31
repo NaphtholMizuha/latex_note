@@ -1,0 +1,87 @@
+\section{着色问题}
+\subsection{边着色问题}
+排课表问题: \textit{
+设有 $m$ 位老师, $n$ 个班级,其中教师 $x_i$ 要给班级 $y_j$ 上 $p_{i,j}$节课.求如何在最少节次排完所有课.
+}
+
+对此建模,令 $X = \{x_1,x_2,\cdots,x_m\},Y=\{y_1,y_2,\cdots,y_n\}$. $x_i$ 与 $y_j$ 间连 $p_{i,j}$ 条边,得到二部图 $G = (X,Y)$.
+
+问题转为:\textit{如何将 $E(G)$ 划分为互斥的 $p$ 个匹配,且使 $p$ 最小.}
+
+\begin{definition}
+设图 $G$, 对 $G$ 的边着色,若相邻边着不同颜色,则称对 
+$G$ 进行\textbf{正常边着色}.如果能用 
+$k$ 种颜色对图 $G$ 进行正常着色,则称 $G$ 是 \textbf{$k$ 边可着色的}.
+\end{definition}
+
+\begin{definition}
+设图 $G$, 对 $G$ 进行正常边着色所需要的颜色数量称为\textbf{边色数}.记为 $\chi'(G)$.
+\end{definition}
+
+\begin{theorem}
+对于完全二部图: $\chi'(K_{m,n})=\Delta$
+\end{theorem}
+
+\begin{definition}
+设 $\pi$ 是 $G$ 的一种正常边着色,若点 $u$ 关联的边的着色没有用到颜色 $i$,则称 \textbf{点$u$缺$i$ 色}.
+\end{definition}
+
+\begin{theorem}[K\"{o}nig]
+对于二部图 $G$: $\chi'(G) = \Delta(G)$.
+\end{theorem}
+
+\begin{lemma}
+    设 \(G\) 是简单图, \(x,y_1\)是 \(G\) 中不相邻的两个顶点,
+    \(\pi\) 是一个正常 \(k\) 着色. 若对 \(\pi\): \(x,y_1\)
+    以及 \(x\) 的相邻点都至少缺一种颜色, 则 \(G + xy_1\) 也是
+    \(k\) 边可着色的.
+\end{lemma}
+
+\begin{theorem}[Vizing]
+    如果 \(G\) 是简单图, 那么:
+    \[\chi'(G) = \Delta(G) \textor \chi'(G) = \Delta(G) + 1\]
+\end{theorem}
+
+\begin{definition}
+    设简单图 \(G(\Delta(G) > 0)\). 若 \(G\) 中只有一个最大度点
+    或者两个相邻的最大度点, 则
+    \[\chi'(G) = \Delta(G)\]
+\end{definition}
+
+\begin{definition}
+    设简单图 \(G\). 若 \(G\) 的点数 \(n = 2k+1\) 且
+    边数 \(m > k \Delta(G)\), 则
+    \[\chi'(G) = \Delta(G) + 1\]
+\end{definition}
+
+\begin{definition}
+    对于奇数阶\(\Delta\) 正则简单图 \(G\). 若 \(\Delta > 0\) 则
+    \[\chi'(G) = \Delta(G) + 1\]
+\end{definition}
+
+\begin{definition}[Vizing]
+    设无环图 \(G\) 中边的最大重数是 \(\mu\), 则
+    \[\chi'(G) \le \Delta(G) + \mu\]
+\end{definition}
+
+\subsection{点着色问题}
+
+\begin{example}[课程安排问题]
+    某大学开设了 \(i\) 种课程供 \(j\) 个学生选择. 求如何排课使得
+    节次最少且不能让任何一位学生的选课发生冲突?
+\end{example}
+
+\begin{definition}[正常点着色]
+    设图 $G$, 对 $G$ 的边着色,若相邻边着不同颜色,则称对 
+    $G$ 进行\textbf{正常点着色}.如果能用 
+    $k$ 种颜色对图 $G$ 进行正常点着色,则称 $G$ 是 \textbf{$k$ 点可着色的}.
+\end{definition}
+
+\begin{definition}[点色数]
+    设图 $G$, 对 $G$ 进行正常点着色所需要的颜色数量称为\textbf{点色数}.记为 $\chi(G)$.
+\end{definition}
+
+\begin{theorem}
+    对任意图 \(G\):
+    \[\chi(G) \le \Delta(G) + 1\]
+\end{theorem}
