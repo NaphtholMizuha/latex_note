@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  31 MAY 2022 10:40
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  31 MAY 2022 15:20
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -628,19 +628,19 @@ Package xeCJK Warning: Redefining CJKfamily `\CJKrmdefault'
 
 Package fontspec Info: Font family 'SimSun(0)' created for font 'SimSun' with
 (fontspec)             options
-(fontspec)             [Script={CJK},Path={fonts/},Extension={.ttf},BoldFont={SimHei},ItalicFont={simkai}].
+(fontspec)             [Script={CJK},Path={../../fonts/},Extension={.ttf},BoldFont={SimHei},ItalicFont={simkai}].
 (fontspec)              
 (fontspec)              This font family consists of the following NFSS
 (fontspec)             series/shapes:
 (fontspec)              
 (fontspec)             - 'normal' (m/n) with NFSS spec.:
-(fontspec)             <->"[fonts/SimSun.ttf]/OT:script=hani;language=dflt;"
+(fontspec)             <->"[../../fonts/SimSun.ttf]/OT:script=hani;language=dflt;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 (fontspec)             - 'bold' (b/n) with NFSS spec.:
-(fontspec)             <->"[fonts/SimHei.ttf]/OT:script=hani;language=dflt;"
+(fontspec)             <->"[../../fonts/SimHei.ttf]/OT:script=hani;language=dflt;"
 (fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
 (fontspec)             - 'italic' (m/it) with NFSS spec.:
-(fontspec)             <->"[fonts/simkai.ttf]/OT:script=hani;language=dflt;"
+(fontspec)             <->"[../../fonts/simkai.ttf]/OT:script=hani;language=dflt;"
 (fontspec)             - 'italic small caps'  (m/scit) with NFSS spec.: 
 
 )
@@ -813,8 +813,8 @@ LaTeX Font Warning: Size substitutions with differences
  ) 
 Here is how much of TeX's memory you used:
  16619 strings out of 476180
- 379511 string characters out of 5809555
- 772348 words of memory out of 5000000
+ 379607 string characters out of 5809555
+ 772402 words of memory out of 5000000
  37056 multiletter control sequences out of 15000+600000
  474584 words of font info for 76 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191

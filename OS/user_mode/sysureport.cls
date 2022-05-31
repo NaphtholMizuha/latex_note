@@ -27,7 +27,7 @@
 
 
 \setCJKmainfont[
-  Path = fonts/ ,
+  Path = ../../fonts/ ,
   Extension = .ttf ,
   BoldFont = SimHei ,
   ItalicFont = simkai ,
