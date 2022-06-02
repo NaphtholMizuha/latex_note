@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  30 MAY 2022 18:02
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  2 JUN 2022 17:04
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -636,19 +636,19 @@ Package xeCJK Warning: Redefining CJKfamily `\CJKrmdefault'
 
 Package fontspec Info: Font family 'SimSun(0)' created for font 'SimSun' with
 (fontspec)             options
-(fontspec)             [Script={CJK},Path={fonts/},Extension={.ttf},BoldFont={SimHei},ItalicFont={simkai}].
+(fontspec)             [Script={CJK},Path={../fonts/},Extension={.ttf},BoldFont={SimHei},ItalicFont={simkai}].
 (fontspec)              
 (fontspec)              This font family consists of the following NFSS
 (fontspec)             series/shapes:
 (fontspec)              
 (fontspec)             - 'normal' (m/n) with NFSS spec.:
-(fontspec)             <->"[fonts/SimSun.ttf]/OT:script=hani;language=dflt;"
+(fontspec)             <->"[../fonts/SimSun.ttf]/OT:script=hani;language=dflt;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 (fontspec)             - 'bold' (b/n) with NFSS spec.:
-(fontspec)             <->"[fonts/SimHei.ttf]/OT:script=hani;language=dflt;"
+(fontspec)             <->"[../fonts/SimHei.ttf]/OT:script=hani;language=dflt;"
 (fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
 (fontspec)             - 'italic' (m/it) with NFSS spec.:
-(fontspec)             <->"[fonts/simkai.ttf]/OT:script=hani;language=dflt;"
+(fontspec)             <->"[../fonts/simkai.ttf]/OT:script=hani;language=dflt;"
 (fontspec)             - 'italic small caps'  (m/scit) with NFSS spec.: 
 
 ) (./main.aux)
@@ -739,14 +739,14 @@ LaTeX Font Info:    Font shape `TU/SimSun(0)/m/sl' in size <10.53937> not availa
 (Font)              Font shape `TU/SimSun(0)/m/it' tried instead on input line 79.
  [1
 
-]) (./problem1.tex [2]) (./chap11.tex [3]) [4] (./main.aux) ) 
+]) (./problem1.tex [2]) (./chap11.tex [3] [4]) [5] (./main.aux) ) 
 Here is how much of TeX's memory you used:
  20147 strings out of 476180
- 474653 string characters out of 5809555
- 789927 words of memory out of 5000000
+ 474710 string characters out of 5809555
+ 790020 words of memory out of 5000000
  40495 multiletter control sequences out of 15000+600000
  476769 words of font info for 85 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  114i,8n,118p,464b,336s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on main.pdf (4 pages).
+Output written on main.pdf (5 pages).
