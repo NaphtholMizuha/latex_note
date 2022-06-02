@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  27 MAY 2022 11:49
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  1 JUN 2022 18:11
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -633,19 +633,19 @@ Package xeCJK Warning: Redefining CJKfamily `\CJKrmdefault'
 
 Package fontspec Info: Font family 'SimSun(0)' created for font 'SimSun' with
 (fontspec)             options
-(fontspec)             [Script={CJK},Path={fonts/},Extension={.ttf},BoldFont={SimHei},ItalicFont={simkai}].
+(fontspec)             [Script={CJK},Path={../fonts/},Extension={.ttf},BoldFont={SimHei},ItalicFont={simkai}].
 (fontspec)              
 (fontspec)              This font family consists of the following NFSS
 (fontspec)             series/shapes:
 (fontspec)              
 (fontspec)             - 'normal' (m/n) with NFSS spec.:
-(fontspec)             <->"[fonts/SimSun.ttf]/OT:script=hani;language=dflt;"
+(fontspec)             <->"[../fonts/SimSun.ttf]/OT:script=hani;language=dflt;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 (fontspec)             - 'bold' (b/n) with NFSS spec.:
-(fontspec)             <->"[fonts/SimHei.ttf]/OT:script=hani;language=dflt;"
+(fontspec)             <->"[../fonts/SimHei.ttf]/OT:script=hani;language=dflt;"
 (fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
 (fontspec)             - 'italic' (m/it) with NFSS spec.:
-(fontspec)             <->"[fonts/simkai.ttf]/OT:script=hani;language=dflt;"
+(fontspec)             <->"[../fonts/simkai.ttf]/OT:script=hani;language=dflt;"
 (fontspec)             - 'italic small caps'  (m/scit) with NFSS spec.: 
 
 ) (./main.aux)
@@ -741,16 +741,16 @@ LaTeX Font Info:    Font shape `TU/SimSun(0)/m/sl' in size <10.53937> not availa
 LaTeX Font Warning: Font shape `TU/SimSun(0)/b/it' undefined
 (Font)              using `TU/SimSun(0)/b/n' instead on input line 109.
 
-[2]) (./coloring.tex [3] [4]) [5] (./main.aux)
+[2]) (./coloring.tex [3] [4]) (./plain.tex) [5] (./main.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 20150 strings out of 476180
- 474691 string characters out of 5809555
- 789049 words of memory out of 5000000
- 40496 multiletter control sequences out of 15000+600000
+ 20155 strings out of 476180
+ 474803 string characters out of 5809555
+ 789142 words of memory out of 5000000
+ 40498 multiletter control sequences out of 15000+600000
  476777 words of font info for 86 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  114i,9n,118p,482b,343s stack positions out of 5000i,500n,10000p,200000b,80000s

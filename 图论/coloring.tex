@@ -85,3 +85,36 @@ $k$ 种颜色对图 $G$ 进行正常着色,则称 $G$ 是 \textbf{$k$ 边可着�
     对任意图 \(G\):
     \[\chi(G) \le \Delta(G) + 1\]
 \end{theorem}
+
+\begin{theorem}[Brooks]
+    若 \(G\) 是连通的单图, 并且它既不是奇圈, 也不是完全图, 则:
+    \[\chi(G) \le \Delta(G)\]
+\end{theorem}
+
+\begin{definition}[次大度]
+    设 \(G\) 是至少有一条边的简单图, 定义:
+    \[\Delta_2(G)= \max_{u \in V(G)} \max_{\substack{v \in N(u) \\
+    d(v) \le d(u)}}d(v)\]
+    其中 \(N\) 为 \(u\) 的邻域. 称 \(\Delta_2(G)\) 为\textbf{次大度}.
+\end{definition}
+
+\textit{
+    如果令
+    \[V_2(G) = \{v|v \in V(G), \exists u \in N(v): d(u) \le d(v)\}\]
+    则有
+    \[\Delta_2(G) = \max\{d(v)|v \in V_2(G)\}\]
+}
+
+\begin{theorem}
+    设 \(G\) 是非空简单图, 则有:
+    \[\chi(G) \le \Delta_2(G) + 1\]
+\end{theorem}
+
+\begin{lemma}
+    设 \(G\) 是非空简单图, 如果 \(G\) 中最大度顶点互不相邻, 则有:
+    \[\chi(G) \le \Delta(G)\]
+\end{lemma}
+
+\begin{theorem}[Heawood,五色定理]
+    每个平面图都是5-点可着色的.
+\end{theorem}
