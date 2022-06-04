@@ -1,5 +1,5 @@
 \subsection{神经网络算法原理}
-\textbf{神经网络}采用了仿生学的思想,通过模拟生物神经网络的结构和功能来实现建模.此次实验将完成多层感知机,输入数据将通过4个\textbf{全连接层}以及4个\textbf{激活函数层}(3个ReLU层以及一个softmax层)之后得到输出数据.训练数据(以及测试数据)将通过\textbf{正向传播}得到相应的分类,而预测值与真实值的差异可以使用\textbf{损失函数}估算,最后通过\textbf{反向传播}得到各个变量的梯度,按照一定的\textbf{学习率}减去梯度完成学习.
+\textbf{神经网络}采用了仿生学的思想,通过模拟生物神经网络的结构和功能来实现建模.此次实验将完成多层感知机,输入数据将通过若干\textbf{全连接层}(分别配有\textbf{激活函数层})之后得到输出数据.训练数据(以及测试数据)将通过\textbf{正向传播}得到相应的分类,而预测值与真实值的差异可以使用\textbf{损失函数}估算,最后通过\textbf{反向传播}得到各个变量的梯度,按照一定的\textbf{学习率}减去梯度完成学习.
 
 \subsubsection{全连接层}
 该层会接受一个向量 $\boldsymbol{x}$ 作为输入,并将其按照$n$组权重 $\boldsymbol{W}$ 计算出$n$维向量 $\boldsymbol{y}$作为输出,有时输出向量还会加上偏置向量 $\boldsymbol{b}$ 进行调整.
@@ -118,6 +118,16 @@ $$
 $$
 \nabla_{\boldsymbol{X}} L = \bracket{\pder{L}{x_{i,j}}} = \bracket{\sum_j \pder{L}{y_{i,j}} \pder{y_{i,j}}{x_{i,k}}} = \bracket{\sum_j \pder{L}{y_{i,j}} w_{k,j}} = \bracket{\sum_j  \pder{L}{y_{i,j}} w^\T_{j,k}} = (\nabla_{\boldsymbol{Y}} L) \boldsymbol{W}^\T 
 $$
+
+\subsubsection{SME损失函数}
+前向传播很简单:
+\[L_\mathrm{SME} = \frac{1}{p}(\hat{\boldsymbol{Y}} - \boldsymbol{Y})^2\]
+其中 \(p\) 是矩阵中元素的个数.
+
+反向传播:
+\[\nabla_{\boldsymbol{Y}} = \frac{1}{p}\bracket{\pder{L}{y_{i,j}}} = 
+\frac{2}{p}\bracket{y_{i,j} - \hat{y}_{i,j}} = \frac{2}{p}
+(\boldsymbol{Y} - \hat{\boldsymbol{Y}})\]
 
 \subsubsection{参数学习}
 给定学习率 $\eta$ 每次反向传播之后全连接层的权重矩阵和偏置向量都会进行学习:

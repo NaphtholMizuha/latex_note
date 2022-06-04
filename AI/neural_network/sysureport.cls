@@ -29,7 +29,7 @@
 \setlist[enumerate,2]{label=\alph*.}
 
 \setCJKmainfont[
-  Path = fonts/ ,
+  Path = ../../fonts/ ,
   Extension = .ttf ,
   BoldFont = SimHei ,
   ItalicFont = simkai ,
