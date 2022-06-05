@@ -1,0 +1,147 @@
+\section{多项式环}
+
+\begin{definition}[多项式环]
+    整数环、有理数域、实数域上的全体多项式构成的\textbf{多项式环}:
+    \begin{align*}
+        \Z[x] = \{\sum_{i=0}^n a_i x^i | a_i \in \Z, n \ge 0\} \\
+        \Q[x] = \{\sum_{i=0}^n a_i x^i | a_i \in \Q, n \ge 0\} \\
+        \R[x] = \{\sum_{i=0}^n a_i x^i | a_i \in \R, n \ge 0\}
+    \end{align*}
+\end{definition}
+
+\begin{definition}
+    设 \(R\) 是一个整环. 系数取自 \(R\) 的全体多项式构成的集合:
+    \begin{equation*}
+        R[x]=\{\sum_{i=0}^n a_i x^i | a_i \in R, n \ge 0\}
+    \end{equation*}
+    则称 \(R[x]\) 是\textbf{多项式整环}.
+\end{definition}
+
+\begin{definition}
+    设 \(f(x),g(x)\) 是多项式整环 \(R[x]\) 中的任意两个多项式, 其中 \(g(x) \ne 0\).
+    如果存在多项式 \(q(x)\) 使得等式 
+    \[f(x) = q(x) \cdot g(x)\]
+    成立,就称 \(g(x)\) \textbf{整除} \(f(x)\), 记为 \(g(x) \mid f(x)\).
+\end{definition}
+
+\begin{definition}[不可约多项式]
+    设 \(f(x)\) 是整环 \(R\) 上的非常数多项式. 如果除了平凡因式 \(f(x)\) 以外,
+    \(f(x)\) 没有其他非常数多项式, 那么, \(f(x)\) 就称为 \textbf{不可约多项式};
+    否则称为可约多项式.
+\end{definition}
+
+\textit{例子: \(4x^2+4\) 是一个不可约多项式.}
+
+\begin{theorem}
+    设 \(f(x)\) 是域 \(K\) 上的次数为 \(n\) 的可约多项式, \(p(x)\) 是 \(f(x)\) 的
+    次数最小的非常数因式. 则 \(p(x)\) 一定是不可约多项式, 且
+    \[\deg p < \frac{1}{2}\deg f\]
+\end{theorem}
+
+\begin{theorem}
+    设 \(f(x)\) 是域 \(K\) 上的多项式, 如果 
+    \(\forall p(x)\) 满足 \(\deg p < \frac{1}{2}\deg f\)
+    且 \(p(x)\) 不可约, 都有: \(p(x) \nmid f(x)\),
+    则 \(f(x)\) 一定是不可约多项式.
+\end{theorem}
+
+\begin{example}
+    \(f(x) = x^8 + x^4 + x^3 + x + 1\) 是 \(\F_2[x]\) 中的不可约多项式.
+\end{example}
+
+\begin{definition}[多项式的Euclid除法]
+    给定整环上的多项式 \(f(x),g(x) (\deg f \ge \deg g)\),
+    那么可以找到两个多项式 \(q(x), r(x)\) 使得
+    \[f(x) = q(x) \cdot g(x) + r(x)\]
+    且 \(\deg r < \deg g\).
+\end{definition}
+
+\begin{definition}[最大公因式, 最小公倍式]
+    设 \(f(x),g(x),d(x)\) 是整环 \(R\) 上的多项式. 称 \(d(x)\) 是
+    \(f(x),g(x)\) 的 \textbf{最大公因式}, 如果
+    \[d(x) \mid f(x), \quad d(x) \mid g(x)\]
+    并且 \(\forall h(x) : h(x) \mid f(x), h(x) \mid g(x)\) 都有 \(h(x) \mid d(x)\).
+
+    称 \(m(x)\) 是 \(f(x),g(x)\) 的 \textbf{最小公倍式}, 如果
+    \[f(x) \mid m(x), \quad g(x) \mid m(x)\]
+    并且 \(\forall h(x) : f(x) \mid h(x), g(x) \mid h(x)\) 都有 \(m(x) \mid h(x)\).
+
+    \(d(x),m(x)\) 都可以记为 \(\gcd(f(x),g(x)),\lcm(f(x),g(x))\).
+\end{definition}
+
+\begin{definition}[多项式互素]
+    设 \(f(x),g(x),d(x)\) 是整环 \(R\) 上的多项式.
+    若 \(\gcd(f(x), g(x)) = 1\),则称 \(f(x)\) 与 \(g(x)\) 互素.
+    记为 \(f(x) \perp g(x)\)
+\end{definition}
+
+\begin{theorem}[多项式广义Euclid除法]
+    设 \(f(x),g(x),d(x)\) 是域 \(K\) 上的多项式.
+    \(\exists s_k(x),t_k(x)\) 使得
+    \[s_k(x)f(x) + t_k(x)g(x) = \gcd(f(x),g(x))\]
+    对于 \(i = 0,1,2,\cdots,k\). \(s_i(x),t_i(x)\)归纳定义为:
+    \[\begin{cases}
+        r_{-2}(x) = f(x),\quad r_{-1}(x) = g(x),\quad r_{i} = r_{i-2} \mod{r_{i-1}} \\
+        q_{i} = \lfloor \frac{r_{i-2}}{r_{i-1}} \rfloor \\
+        s_{-2}(x) = 1,\quad s_{-1}(x) = 0,\quad s_{i}(x) = -q_i(x) s_{i-1}+s_{i-2} \\
+        t_{-2}(x) = 0,\quad s_{-1}(x) = 1,\quad t_{i}(x) = -q_i(x) t_{i-1}+t_{i-2} \\
+    \end{cases}\]
+\end{theorem}
+
+还可以在域 \(K\) 上的多项式环 \(K[x]\) 上完美复刻第二章关于同余的知识点.
+
+\begin{definition}[多项式环的商环]
+    设 \(p(x)\) 是域 \(K\) 上的多项式环 \(K[x]\) 中的一个多项式
+\end{definition}
+
+\begin{theorem}
+    设 \(p(x)\) 是域 \(K\) 上的多项式环 \(K[x]\) 的一个不可约多项式, 
+    则 \(K[x]\) 关于理想 \((p(x))\) 的商环 \(K[x]/(p(x))\) 关于
+    多项式模 \(p(x)\) 加法以及模 \(p(x)\) 乘法构成一个域.
+\end{theorem}
+    
+\begin{theorem}[有限域构造]
+    设素数 \(p\). \(p(x)\) 是多项式环 \(\F_p[x]\) 中
+    的一个代数次数为 \(n\) 的不可约多项式, 则 \(\F_p[x]\)
+    关于理想 \((p(x))\) 的商环 \(\F_p[x]/(p(x))\) 满足:
+    \[\F_p[x]/(p(x)) = \{a_{n-1}x^{n-1} + \cdots + a_1 x + a_0|a_i \in \F_p\}\]
+    一般记 \(\F_p[x]/(p(x)) = \F_{p^n}\).
+\end{theorem}
+
+\begin{definition}[本原多项式]
+    设素数 \(p\). 设 \(f(x)\) 是有限域 \(\F_p\) 上
+    的多项式环 \(\F_p[x]\) 中的一个 \(n\) 次多项式. 使得
+    \[x^e \equiv 1 \pmod{f(x)}\]
+    成立的最小正整数 \(e\) 叫做 \(f(x)\) 在有限域 \(\F_p\)
+    上的指数. 记为 \(\ord{p}{f(x)}\).
+
+    特别地, 如果 \(\ord{p}{f(x)} = p^n - 1\), 则称 \(f(x)\)
+    为 \(\F_p\) 上的本原多项式
+\end{definition}
+
+\begin{example}
+    对于计算机最喜欢的 \(\F_2 = (\{0,1\},+_2, (\cdot)_2)\),
+    有一个本原多项式 \(x^8+x^4+x^3+x^2+x\), 令
+    \[\F_{2^8} = \F_2[x]/(x^8+x^4+x^3+x^2+x)\]
+\end{example}
+
+\(\F\) 的本原元就是 \(\F^*\) 的生成元.
+
+\begin{theorem}[\textbf{本原多项式的性质}]
+    设素数 \(p\), 设 \(f(x),g(x)\in \F_p[x]\). 则有以下性质:
+    \begin{itemize}
+        \item 若整数 \(x^d\) 使得 \(x^d \equiv 1 \pmod{f(x)}\), 则 \(\ord{p}{f(x)} \mid d\).
+        \item 若 \(g(x) \mid f(x)\), 则 \(\ord{p}{g(x)} \mid \ord{p}{f(x)}\).
+        \item 如果 \(\gcd(f(x),g(x)) = 1\), 则 \(\ord{p}{f(x)\cdot g(x)} = \lcm(\ord{p}{f(x)}, \ord{p}{g(x)})\).
+        \item 如果 \(f(x)\) 是不可约多项式, 则 \(\ord{p}{f(x)} \mid p^n - 1\).
+        \item \(f(x)\) 是本原多项式 \(\implies f(x)\) 是不可约多项式.
+    \end{itemize}
+\end{theorem}
+
+\begin{theorem}[\textbf{本原多项式判定}]
+    设素数 \(p\). 设 \(f(x) \in \F_p[x], \deg f = n\).
+    如果 \(x^{p^n - 1} \equiv 1 \pmod{f(x)}\), 且对于
+    \(p^n - 1\) 的所有不同素因数 \(q_i\), 都有
+    \[x^{\frac{p^n - 1}{q_i}} \ne 1 \pmod{f(x)}\]
+    则 \(f(x)\) 是本原多项式.
+\end{theorem}
