@@ -42,6 +42,36 @@
 
 \subsection{从子进程第一次被调度执行时开始，逐步跟踪子进程的执行流程一直到子进程从\texttt{fork()}返回，根据gdb来分析子进程的跳转地址、数据寄存器和段寄存器的变化。同时，比较上述过程和父进程执行完\texttt{ProgramManager::fork()}后的返回过程的异同}
 
+子进程第一次调度时直接进入到了一个函数的中间，显然它继承了父进程的上下文。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/sub0.png}
+    \label{sub0}
+\end{figure}
+
+可以发现\texttt{esp, cs, ds} 寄存器发生了变化，在执行这段代码时系统已经完成了换栈。
+跳转地址显示这段程序将直接跳到 \texttt{fork()} 函数然后进行返回。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/sub1.png}
+    \label{sub1}
+\end{figure}
+
+对比父进程从 \texttt{ProgramManager::fork()} 返回时的过程：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/sup0.png}
+    \includegraphics[width=0.6\textwidth]{figures/sup1.png}
+    \includegraphics[width=0.6\textwidth]{figures/sup2.png}
+    \label{sup}
+\end{figure}
+
+可以看到父进程完成了一个完整的系统调用的过程，而子进程在创建时这个系统调用已经
+执行了一半，所以只需要经过剩下一半的系统调用。符合子进程继承父进程的上下文的特点。
+
 \subsection{根据代码逻辑和gdb来解释\texttt{fork()}是如何保证子进程的\texttt{fork()}返回值是0，而父进程的\texttt{fork()}返回值是子进程的pid}
 
 \texttt{ProgramManeger::fork()}函数的返回值是新创建的进程的pid，也就是子进程的pid。
@@ -55,3 +85,13 @@
 \texttt{exit()}且其参数为0。
 
 \subsection{回收僵尸进程}
+
+僵尸进程即为父进程先于该进程退出的进程。所以回收的方法很简单：如果在进程调度发现
+当前时 \texttt{DEAD} 状态，且在所有进程中没有找到其父进程，就直接释放其PCB。
+具体代码实现为下图用绿色标记的行。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/zombie.png}
+    \label{zombie}
+\end{figure}
