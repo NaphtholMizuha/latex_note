@@ -1,1 +1,96 @@
 \section{平面图}
+
+\subsection{平面图的概念与性质}
+
+通过以下例子可以导入平面图问题:
+
+\begin{example}[电路板设计问题]
+    电路板中的电路元件的连接导线互不交叉, 可以转化为
+    ``要求图中的边不能相互交叉''.
+\end{example}
+
+\begin{definition}[平面图]
+    如果能将图 \(G\) 画在平面上, 且所有边相互都不相交,
+    则称 \(G\) 为\textbf{可平面图}. 这样的一种画法
+    称为 \(G\) 的一种\textbf{平面嵌入}, \(G\) 的
+    平面嵌入表示的图称为\textbf{平面图}.
+\end{definition}
+
+\begin{definition}[平面图的面]
+    一个平面图\(G\)将平面分成若干个连通片, 这些连通片
+    称为\textbf{区域}或\textbf{面}. 
+    G的面组成的集合用\(\varPhi(G)\)表示.
+
+    其中面积有限的面称为\textbf{内部面}, 其余称为
+    \textbf{外部面}.
+
+    在\(G\)中, 顶点和边都与某个给定面关联的子图,
+    称为该面的\textbf{边界}. 某面\(f\)的边界中
+    含有的边数(割边计算2次)称为面\(f\)的\textbf{次数},
+    记为\(\deg f\)
+\end{definition}
+
+\begin{theorem}[仿握手定理]
+    设\(G = (n,m)\)是平面图, 则:
+    \[\sum_{f \in \varPhi(G)} \deg f = 2m\]
+\end{theorem}
+
+\begin{theorem}[平面图的Euler公式]
+    设\(G = (n,m)\)是连通平面图, \(\phi\) 是
+    \(G\)的面数, 则有:
+    \[n - m + \phi = 2\]
+\end{theorem}
+
+\begin{deduction}
+    设\(G\)是具有\(k\)个连通分支的平面图, 则有:
+    \[n - m + \phi = k + 1\]
+\end{deduction}
+
+\begin{deduction}
+    设\(G\)是具有\(n\)个点\(m\)个边\(\phi\)个面
+    的连通平面图, 如果
+    \(\forall f \in \varPhi(G):3 \le l \le \deg f\),
+    则有:
+    \[m \le \frac{l}{l-2}(n-2)\]
+
+    反过来, 如果\(G=(n,m)\)是连通图, 且
+    \[m > \frac{l}{l-2}(n-2)\]
+    则\(G\)是不可平面图.
+\end{deduction}
+
+\begin{theorem}[两种不可平面图]
+    \(K_{3,3}\)和\(K_5\)都是不可平面图.
+\end{theorem}
+
+\begin{deduction}
+    设连通平面图\(G=(n,m)\), 若\(G\)的每个圈都是
+    由长度是\(l\)的圈围成, 则:
+    \[m(l-2)=l(n-2)\]
+\end{deduction}
+
+\begin{deduction}
+    设简单平面图\(G\), 则:
+    \[\delta(G) \le 5\]
+    也就是说简单平面图不能以\(K_5\)为子图.
+\end{deduction}
+
+\begin{theorem}[]
+    一个连通平面图是2-连通的, 当且仅当它每个面的边界都是圈.
+\end{theorem}
+
+\subsection{图的嵌入性问题}
+
+\begin{theorem}
+    如果图\(G\)是可平面的, 那么它也可以球面嵌入.
+\end{theorem}
+
+\begin{theorem}
+    所有的图都可以嵌入\(\R^3\).
+\end{theorem}
+
+\subsection{凸多面体与平面图}
+
+\begin{definition}[凸多面体]
+    如果一个多面体上任取两点, 之间的连线都在该多面体内,
+    则称为凸多面体.
+\end{definition}

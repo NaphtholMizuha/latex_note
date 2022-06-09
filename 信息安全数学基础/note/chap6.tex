@@ -1,0 +1,95 @@
+\section{素性检验}
+
+\subsection{Fermat伪素数}
+
+\begin{definition}[Fermat伪素数]
+    设 \(n\) 是一个奇合数, \(b \in \Z^+, \gcd(b,n)=1\) 且:
+    \[b^{n-1} \equiv 1 \pmod{n}\]
+    则称 \(n\) 是基于 \(b\) 的Fermat伪素数伪素数
+\end{definition}
+
+\begin{theorem}[Fermat伪素数伪素数的性质]
+    奇合数 \(n\) 是基于 \(b\) 的Fermat伪素数伪素数 iff
+    \[\ord{n}{b} \mid (n-1)\]
+\end{theorem}
+
+\begin{theorem}[Fermat伪素数与模逆]
+    奇合数 \(n\) 是基于 \(b\) 的Fermat伪素数伪素数 \(\implies\)
+    \(n\) 是基于 \(b^{-1}\) 的Fermat伪素数伪素数.
+\end{theorem}
+
+\begin{theorem}[Fermat伪素数与简化剩余系]
+    假设奇合数 \(n\) 以及整数 \(b, b\perp n\) 满足:
+    \[b^{n-1} \not \equiv 1 \pmod{n}\]
+    则在 \((\Z/n\Z)^*\) 中至少有一半的元素满足
+    \[b_i^{n-1} \not \equiv 1 \pmod{n}\]
+\end{theorem}
+
+\textbf{Fermat素性检验} \hspace{1em} 给定整数 \(n \ge 3\) 以及
+安全参数 \(t\).
+\begin{itemize}
+    \item 随机选择 \(b\) 满足 \(2 \le b \le n-2\) 以及 \(b \perp n\).
+    \item 计算 \(r = b^{n-1} \pmod{n}\).
+    \item 若 \(r \ne 1\), 则 \(r\) 是合数.
+    \item 上述步骤循环 \(t\) 次.
+\end{itemize}
+
+\textit{注: 每计算一次, \(r\) 是素数的概率就会降低 \(\frac{1}{2}\).
+计算一定次数之后就可以近似认为 \(r\) 是素数.
+但是也存在一数\(b,b\perp n\)满足 \(b^{n-1} \equiv 1 \pmod{n}\)但 \(n\) 仍然是合数.
+这样的数字称为Carmichael数. 一旦出现这种数字, Fermat素性检验将会失效.
+}
+
+\subsection{Euler伪素数}
+
+\begin{definition}[Euler伪素数]
+    设奇合数 \(n\) 满足 \(\forall b \in Z:\)
+    \[b^{\frac{n-1}{2}} = \legendre{b}{n} \pmod{n}\]
+    则称 \(n\) 为基于 \(b\) 的Euler伪素数.
+\end{definition}
+
+\begin{definition}[Euler伪素数的性质]
+    如果 \(n\) 是基于 \(b\) 的Euler伪素数, 则
+    \(n\) 一定是基于 \(b\) 的Fermat伪素数.
+\end{definition}
+
+\textbf{Solovay-Stassen素性检验} \hspace{1em} 给定整数 \(n \ge 3\) 以及
+安全参数 \(t\).
+\begin{itemize}
+    \item 随机选择 \(b\) 满足 \(2 \le b \le n-2\) 以及 \(b \perp n\).
+    \item 计算 \(r = b^{\frac{n-1}{2}} \pmod{n}\).
+    \item 若 \(r \ne \legendre{b}{n}\), 则 \(r\) 是合数.
+    \item 上述步骤循环 \(t\) 次.
+\end{itemize}
+
+\textit{注:Euler伪素数是Fermat伪素数的子集, 也就是说
+通过Solovay-Stassen素性检验得到的素数可信度更高.}
+
+\subsection{强伪素数}
+
+\begin{definition}[强伪素数]
+    设奇合数 \(n\), 且 \(n - 1 = 2^s \cdot t\).
+    如果以下任何一个同余方程成立
+    \begin{align*}
+        b^t &\equiv 1 \pmod{n} \\
+        b^{2^i \cdot t} &\equiv -1 \pmod{n}, \quad 0 \le i < s
+    \end{align*}
+    则称 \(n\) 为基于 \(b\) 的强伪素数.
+\end{definition}
+
+\begin{theorem}[强伪素数为什么是神]
+    \(n\) 是基于 \(b\) 的强伪素数 \(\implies\) 
+    \(n\) 是基于 \(b\) 的Euler伪素数. 
+    
+    且\(\forall n\) 是Carmichael数
+    \(\forall b(b \perp n):\) \(n\) 不是基于 \(b\)
+    的强伪素数
+\end{theorem}
+
+\textbf{Miller-Rabin素性检验} \hspace{1em} 给定整数 \(n \ge 3\).
+\begin{itemize}
+    \item 随机选择 \(b\) 满足 \(2 \le b \le n-2\) 以及 \(b \perp n\).
+    \item 计算 \(r_0 := b^t \pmod{n}\). 如果 \(r_0 \ne \pm 1\), 则通过检验, 否则令\(i := 1\)继续.
+    \item 计算 \(r_i := r_{i-1}^2\). 如果 \(r_i \ne -1\), 则通过检验,否则 \(i := i+1\)再来一次.
+    \item 如果 \(i = s\) 时算法仍未结束,则判断不通过.
+\end{itemize}

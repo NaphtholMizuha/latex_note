@@ -1,0 +1,41 @@
+\section{连分数}
+
+\begin{definition}[有限连分数]
+    记形如
+    \[x_0 + \cfrac{1}{x_1 + \cfrac{1}{x_2 + \ddots}}, \quad \text{最深处为} x_n\]
+    的数为 \(n\) 阶有限连分数.简单记为
+    \[[x_0;x_1,x_2,\cdots,x_n]\]
+    如果 \(x_i\) 都为正整数, 则称为简单连分数.
+
+    \([x_0;x_1,x_2,\cdots,x_k] = \frac{P_k}{Q_k}\) 称为 第\(k\) 渐进连分数.
+
+\end{definition}
+
+\begin{definition}[无限连分数]
+    假设在上一个定义中的数列\(\{x\}\) 是无穷序列, 则称其为无限连分数, 记为:
+    \[[x_0;x_1,x_2,\cdots,x_l,\cdots]\]
+\end{definition}
+
+\begin{example}
+    \(\sqrt{2}\) 可以写为无穷连分数:
+    \begin{align*}
+        \sqrt{2} &= 1 + \frac{1}{2 + \sqrt{2}} \\
+        &= 1 + \cfrac{1}{2 + \cfrac{1}{2 + \sqrt{2}}} \\
+        & \cdots \\
+        &= 1 + \cfrac{1}{2 + \cfrac{1}{2 + \cfrac{1}{2 + \ddots}}} \\
+        &= [1;2,2,2,\cdots]
+    \end{align*}
+\end{example}
+
+\textbf{实数的简单连分数构造法} \hspace{1em} 给定实数 \(x\).
+\begin{itemize}
+    \item 令 \(x_0 := \floor{x}, r := x - x_0\)
+    \item 如果 \(r = 0\), 则返回 \(x = [x_0]\). 否则令 \(x_1 := \floor{\frac{1}{r}}, r := x_0 - x_1\).
+    \item 如果 \(r = 0\), 则返回 \(x = [x_0;x_1]\). 否则令 \(x_1 := \floor{\frac{1}{r}}, r := x_1 - x_2\).
+    \item ...
+    \item 直到精度满足要求, 返回 \(x = [x_0;x_1, \cdots, x_i]\).
+\end{itemize}
+
+\begin{theorem}
+    有理数的简单连分数一定可以在有限步中计算出.
+\end{theorem}
