@@ -1,0 +1,30 @@
+\subsection{卷积神经网络搭建}
+本次试验中采用卷积神经网络, 具体组成为: 
+两层卷积神经网络层后各接一个ReLU层以及一个最大池化层, 最后以全连接层输出.
+
+具体代码如下:
+
+\inputminted[firstline=3,linenos,breaklines]{python3}{code/cnn.py}
+
+\subsection{图像预处理}
+
+本次试验中采用torchvision库中内置的图像处理函数.
+对于训练集, 将会对图像随机裁剪为特定大小, 应用随机水平翻转, 并对3通道RGB色彩进行数值归一化.
+对于测试集, 将会对图像中心裁剪为特定大小并归一化.
+
+具体代码如下:
+\inputminted[firstline=3,linenos]{python3}{code/trans.py}
+
+\subsection{模型优化}
+
+试验中采用了torch内置的带动量梯度下降优化器, 并设置了一定的学习率以及动量.
+损失函数采用较为常见的交叉熵函数.
+
+具体代码如下:
+
+\inputminted[firstline=41,lastline=42,linenos]{python3}{code/main.py}
+
+\subsection{模型训练}
+
+试验中采用了torch内置的dataloader将图片发送至模型, \texttt{batch\_size}设置为4.
+模型将训练24个\texttt{epoch}, 每代中都会计算出训练集的损失函数以及测试集的准确率函数.

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  8 JUN 2022 18:10
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  10 JUN 2022 11:01
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -741,7 +741,7 @@ LaTeX Font Info:    Font shape `TU/SimSun(0)/m/sl' in size <10.53937> not availa
 LaTeX Font Warning: Font shape `TU/SimSun(0)/b/it' undefined
 (Font)              using `TU/SimSun(0)/b/n' instead on input line 109.
 
-[2]) (./coloring.tex [3] [4]) (./plain.tex [5]) [6] (./main.aux)
+[2]) (./coloring.tex [3] [4]) (./plain.tex [5] [6]) [7] (./main.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
@@ -755,4 +755,4 @@ Here is how much of TeX's memory you used:
  1348 hyphenation exceptions out of 8191
  114i,9n,118p,482b,343s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on main.pdf (6 pages).
+Output written on main.pdf (7 pages).

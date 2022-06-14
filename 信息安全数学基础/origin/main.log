@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  5 JUN 2022 22:57
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  10 JUN 2022 16:23
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -775,19 +775,19 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 5.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-))
+)
 LaTeX Font Info:    Font shape `TU/SimSun(0)/m/sl' in size <10.53937> not available
-(Font)              Font shape `TU/SimSun(0)/m/it' tried instead on input line 33.
+(Font)              Font shape `TU/SimSun(0)/m/it' tried instead on input line 36.
  [1
 
-] (./main.aux) ) 
+]) [2] (./main.aux) ) 
 Here is how much of TeX's memory you used:
- 23457 strings out of 476180
- 576004 string characters out of 5809555
- 855224 words of memory out of 5000000
- 43805 multiletter control sequences out of 15000+600000
+ 23458 strings out of 476180
+ 576007 string characters out of 5809555
+ 859236 words of memory out of 5000000
+ 43806 multiletter control sequences out of 15000+600000
  476721 words of font info for 79 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  114i,5n,118p,482b,386s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on main.pdf (1 page).
+Output written on main.pdf (2 pages).

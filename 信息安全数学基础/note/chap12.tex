@@ -1,1 +1,37 @@
 \section{域}
+
+\begin{definition}[线性空间]
+    设非空集合\(V\), 数域\(K\). 在\(K\)与\(V\)之间定义数乘, 即
+    \(\forall k \in K, \forall \alpha \in V\) 按照数乘法则唯一对应
+    \(V\)中的一个元素\(k\alpha\). 如果\(V\)关于加法构成交换群, 且
+    数乘满足线性空间的数乘公理
+    
+    则称其为线性空间.
+\end{definition}
+
+\begin{definition}[扩域]
+    设\(F\)是一个域, 如果\(K\)是\(F\)的子域, 则称\(F\)是\(K\)的\textbf{扩域}.
+\end{definition}
+
+\begin{theorem}[扩域与线性空间]
+    如果\(F\)是\(K\)的扩域, 则\(F\)是域\(K\)上的线性空间.
+\end{theorem}
+
+\begin{definition}[有限扩张]
+    设\(F\)是\(K\)的扩域. 用\([F:K]\)表示\(F\)在\(K\)上的线性空间的维数.
+    \([F:K] = n\)表示存在线性无关的一组基底\(\beta_1, \cdots, \beta_n \in F\),
+    \(\forall \alpha \in V:\exists b_1, \cdots, b_n \in K\) s.t.
+    \[\alpha = b_1 \beta_1 + \cdots + b_n \beta_n\] 
+\end{definition}
+
+\textit{注: 如果\([F:K]\)是有限的, 则称\(F\)为\(K\)的有限扩域, 否则称无限扩域.}
+
+\begin{theorem}[扩张次数]
+    设\(E\)是\(F\)的扩域, \(F\)是\(K\)的扩域, 则\([E:K]=[E:F]\cdot[F:K]\).
+\end{theorem}
+
+\textit{注: 当且仅当\(E\)是\(F\)的有限扩域, \(F\)是\(K\)的有限扩域时
+\(E\)是\(K\)的有限扩域.}
+
+
+

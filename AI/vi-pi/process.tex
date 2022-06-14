@@ -1,0 +1,106 @@
+\subsection{强化学习原理}
+
+强化学习, 是机器学习的范式和方法论之一. 
+用于描述和解决智能体(agent)在与环境的交互过程中通过学习策略以达成回报最大化或实现特定目标的问题.
+强化学习的常见模型是标准的Markov决策过程.Markov决策过程可以用六元组\((S,A,R,T,P_0,\gamma)\)描述,其中
+\begin{itemize}
+    \item \(S\) 表示状态空间.
+    \item \(A\) 表示行为空间.
+    \item \(R = R(s, a)\) 表示在特定状态下进行特定行为的奖励值函数.
+    \item \(T: S \times A \times S \mapsto [0,1]\) 表示状态变化函数.
+    \item \(P_0\) 表示初始状态的分布.
+    \item \(\gamma\) 表示折扣因子.
+    \item 目标是找到一个能使奖励值期望最大化的策略.
+\end{itemize}
+
+\subsection{策略迭代原理}
+
+从一个初始化的策略出发, 先进行策略评估, 然后改进策略,
+评估改进的策略, 再进一步改进策略.
+经过不断迭代更新，直达策略收敛，这种算法被称为``策略迭代''.
+
+此算法可以用伪代码表示:
+
+\begin{algorithm}[H]
+    \caption{策略评估算法 \texttt{evaluate()}}
+    \SetKwRepeat{DoUntil}{do}{until}
+    \SetKwInOut{Input}{输入}
+    \SetKwInOut{Output}{输出}
+    \Input{Markov六元组\((S,A,R,T,P_0,\gamma)\), 临界误差\(\theta\)}
+    \Output{评估价值映射\(V\)}
+    
+    从 \(P_0\) 中获取价值映射 \(V\) \\
+    \DoUntil{\(\Delta < \theta\)}{
+        \(\Delta := 0\) \\
+        \For{\(s \in S\)}{
+            \(v := V(s)\) \\
+            \(V(s) := R(s, \pi(s)) + \gamma\sum_{s'}T(s,a,s')V(s')\) \\
+            \(\Delta := \max\{\Delta, |v - V(s)|\}\)
+        }
+    }
+    \Return{\(V\)}
+\end{algorithm}   
+
+\begin{algorithm}[H]
+    \caption{策略改进算法 \texttt{improve()}}
+    \SetKwRepeat{DoUntil}{do}{until}
+    \SetKwInOut{Input}{输入}
+    \SetKwInOut{Output}{输出}
+    \Input{Markov六元组\((S,A,R,T,P_0,\gamma)\), 现有策略\(\pi\), 已有价值\(V\)}
+    \Output{策略迭代结果\(\pi'\)}
+    \For{\(s \in S\)}{
+        \(\pi(s) := \arg\max_{a \in A}\left\{R(s,a) + \gamma \sum_{s'}T(s,a,s')V(s')\right\}\)
+    }
+    \Return{\(\pi\)}
+\end{algorithm}
+
+\begin{algorithm}[H]
+    \caption{策略迭代算法}
+    \SetKwRepeat{DoUntil}{do}{until}
+    \SetKwInOut{Input}{输入}
+    \SetKwInOut{Output}{输出}
+    \Input{Markov六元组\(M = (S,A,R,T,P_0,\gamma)\), 临界误差\(\theta\)}
+    \Output{价值评估结果\(V\),策略迭代结果\(\pi\)}
+    随机初始化策略\(\pi\) \\
+    \DoUntil{\(\pi\) 收敛}{
+        \(V := \mathtt{evaluate}(M,\theta)\) \\
+        \(\pi := \mathtt{improve}(M, \pi, V)\)
+    }
+    \Return{\(V, \pi\)}
+\end{algorithm} 
+
+\subsection{价值迭代原理}
+
+对每一个当前状态 \(s\), 对每个可能的动作 \(a\) 
+都计算一下采取这个动作后到达的下一个状态的期望价值. 
+看看哪个动作可以到达的状态的期望价值函数最大, 
+就将这个最大的期望价值函数作为当前状态的价值函数 \(V(s)\),
+循环执行这个步骤, 直到价值函数收敛.
+
+此算法可以用伪代码表示:
+
+\begin{algorithm}[H]
+    \caption{价值迭代算法}
+    \SetKwRepeat{DoUntil}{do}{until}
+    \SetKwInOut{Input}{输入}
+    \SetKwInOut{Output}{输出}
+    \Input{Markov六元组\(M = (S,A,R,T,P_0,\gamma)\), 临界误差\(\theta\)}
+    \Output{价值评估结果\(V\),策略迭代结果\(\pi\)}
+    随机初始化策略\(\pi\), 零初始化价值函数\(V\) \\
+    
+    \DoUntil{\(\Delta < \theta\)}{
+        \(V' := V\) \\
+        \(\Delta := 0\) \\
+        \For{\(s \in S\)}{
+            \(Q_\pi(a) := R(s, a) + \gamma\sum_{s'}T(s,a,s')V(s')\) \\
+            \(V(s) := \max_{a \in A}Q_\pi(a)\) \\
+            \(\pi(s) := \arg\max_{a \in A}Q_\pi(a)\) \\
+            \(\Delta := \max\{\Delta, |V(s)-V'(s)|\}\) 
+        }
+    }
+    \Return{\(V, \pi\)}
+\end{algorithm} 
+
+\subsection{代码实现}
+
+\inputminted[linenos,firstline=43,lastline=184,breaklines,tabsize=4]{python3}{code.py}

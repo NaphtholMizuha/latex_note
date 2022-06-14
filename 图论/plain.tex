@@ -74,14 +74,18 @@
     也就是说简单平面图不能以\(K_5\)为子图.
 \end{deduction}
 
-\begin{theorem}[]
+\begin{theorem}
     一个连通平面图是2-连通的, 当且仅当它每个面的边界都是圈.
 \end{theorem}
 
-\subsection{图的嵌入性问题}
+\subsection{图的嵌入性问题简介}
 
 \begin{theorem}
     如果图\(G\)是可平面的, 那么它也可以球面嵌入.
+\end{theorem}
+
+\begin{theorem}
+    \(K_5\)和\(K_{3,3}\)都是可环面嵌入的.
 \end{theorem}
 
 \begin{theorem}
@@ -94,3 +98,46 @@
     如果一个多面体上任取两点, 之间的连线都在该多面体内,
     则称为凸多面体.
 \end{definition}
+
+\subsection{可平面性充要条件}
+
+\begin{definition}[2度顶点收缩/扩充]
+    将一个2度顶点消除且其关联的边合成一条, 称为2度顶点收缩;
+    其逆过程称为2度顶点扩张.
+\end{definition}
+
+\begin{definition}[同胚]
+    两个图\(G_1,G_2\)是同胚的, 如果 \(G_1 \cong G_2\),
+    或者通过有限次通过2度顶点收缩/扩充能够变为同构的图.
+\end{definition}
+
+\begin{theorem}[Kuratowski]
+    图\(G\)是可平面的, 当且仅当它不含与\(K_5\)或\(K_{3,3}\)
+    同胚的子图.
+\end{theorem}
+
+\begin{definition}[基础简单图]
+    给定图\(G\),去掉\(G\)中的环, 用单边代替重边, 得到的图
+    称为\(G\)的基础简单图.
+\end{definition}
+
+\begin{theorem}
+    图\(G\)可平面, 当且仅当它的基础简单图是可平面的,
+    也当且仅当\(G\)的每个块可平面.
+\end{theorem}
+
+\begin{definition}
+    设\(uv\)是简单图\(G\)的一条边. 去掉该边, 重合其端点, 删去
+    由此产生的环和重边. 这一过程称为图\(G\)的初等收缩. 如果图\(G\)
+    可以初等收缩为图\(H\), 则称\(G\)可收缩到\(H\).
+\end{definition}
+
+\begin{theorem}[Wagner]
+    图\(G\)是可平面的, 当且仅当其不可收缩为\(K_5\)或\(K_{3,3}\).
+\end{theorem}
+
+\begin{theorem}
+    至少有9个顶点的简单平面图的补图是不可平面的.
+
+    \textit{注: 这个定理的条件是紧的}.
+\end{theorem}

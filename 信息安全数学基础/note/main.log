@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  9 JUN 2022 16:42
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  13 JUN 2022 17:42
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -831,7 +831,7 @@ LaTeX Font Info:    Font shape `TU/SimSun(0)/m/sl' in size <10.53937> not availa
 (Font)              Font shape `TU/SimSun(0)/m/it' tried instead on input line 79.
  [1
 
-]) (./chap6.tex [2] [3]) (./chap7.tex [4]) (./problem1.tex) (./chap11.tex [5] [6] [7]) (./chap12.tex) [8] (./main.aux) ) 
+]) (./chap6.tex [2] [3]) (./chap7.tex [4] [5]) (./problem1.tex) (./chap11.tex [6] [7]) (./chap12.tex [8]) [9] (./main.aux) ) 
 Here is how much of TeX's memory you used:
  32709 strings out of 476180
  875012 string characters out of 5809555
@@ -841,4 +841,4 @@ Here is how much of TeX's memory you used:
  1348 hyphenation exceptions out of 8191
  114i,16n,118p,712b,479s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on main.pdf (8 pages).
+Output written on main.pdf (9 pages).
