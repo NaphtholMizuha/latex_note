@@ -1,0 +1,88 @@
+\section{连分数}
+
+\begin{definition}[有限连分数]
+    记形如
+    \[x_0 + \cfrac{1}{x_1 + \cfrac{1}{x_2 + \ddots}}, \quad \text{最深处为} x_n\]
+    的数为 \(n\) 阶有限连分数.简单记为
+    \[[x_0;x_1,x_2,\cdots,x_n]\]
+    如果 \(x_i\) 都为正整数, 则称为简单连分数.
+
+    \([x_0;x_1,x_2,\cdots,x_k] = \frac{P_k}{Q_k} = \theta_k\) 称为 第\(k\) 渐进连分数.
+
+\end{definition}
+
+\begin{definition}[无限连分数]
+    假设在上一个定义中的数列\(\{x\}\) 是无穷序列, 则称其为无限连分数, 记为:
+    \[[x_0;x_1,x_2,\cdots,x_l,\cdots]\]
+
+    如果 \(\lim_{k \to \infty} \theta_k = \theta\) 则称这个连分数是收敛的, 否则称为发散的.
+\end{definition}
+
+\begin{example}
+    \(\sqrt{2}\) 可以写为无穷连分数:
+    \begin{align*}
+        \sqrt{2} &= 1 + \frac{1}{2 + \sqrt{2}} \\
+        &= 1 + \cfrac{1}{2 + \cfrac{1}{2 + \sqrt{2}}} \\
+        & \cdots \\
+        &= 1 + \cfrac{1}{2 + \cfrac{1}{2 + \cfrac{1}{2 + \ddots}}} \\
+        &= [1;2,2,2,\cdots]
+    \end{align*}
+\end{example}
+
+\textbf{实数的简单连分数构造法} \hspace{1em} 给定实数 \(x\).
+\begin{itemize}
+    \item 令 \(x_0 := \floor{x}, r := x - x_0\)
+    \item 如果 \(r = 0\), 则返回 \(x = [x_0]\). 否则令 \(x_1 := \floor{\frac{1}{r}}, r := x_0 - x_1\).
+    \item 如果 \(r = 0\), 则返回 \(x = [x_0;x_1]\). 否则令 \(x_1 := \floor{\frac{1}{r}}, r := x_1 - x_2\).
+    \item ...
+    \item 直到精度满足要求, 返回 \(x = [x_0;x_1, \cdots, x_i]\).
+\end{itemize}
+
+\begin{theorem}
+    有理数的简单连分数一定可以在有限步中计算出.
+\end{theorem}
+
+\textbf{有理分数的简单连分数构造法} \hspace{1em} 给定实数 \(x\).
+令 \(x = \frac{p}{q}\) 是有理数. 对其使用Euclid除法即可得到有限简单连分数:
+\[\frac{p}{q} = [\floor{\frac{p}{q}};\floor{\frac{q}{r_0}},\cdots,\floor{\frac{r_{k-1}}{r_k}}]\]
+
+\begin{theorem}[有限简单连分数的唯一性]
+    给定两个有限简单连分数\([a_0;a_1,\cdots,a_m],[b_0;b_1,\cdots,b_n]\),
+    其中 \(a_m \ge 2, b_n \ge 2\)是整数.
+    如果 \([a_0;a_1,\cdots,a_m]=[b_0;b_1,\cdots,b_n]\)
+    则 \(m = n\) 且 \(\forall i \le m: a_i = b_i\)
+\end{theorem}
+
+\begin{theorem}[连分数嵌套]
+    \[[x_0;x_1+\cdots+x_n+x_{n+1}+\cdots+x_{n+r}] = 
+    [x_0;x_1+\cdots+x_n+[x_{n+1};x_{n+2},\cdots+x_{n+r}]]\]
+\end{theorem}
+
+\begin{theorem}[加点料]
+    \[[x_0;x_1+\cdots+x_{2k}] < [x_0;x_1+\cdots+x_{2k} + \eta]\]
+    \[[x_0;x_1+\cdots+x_{2k-1}] > [x_0;x_1+\cdots+x_{2k-1} + \eta]\]
+    \[\theta_{2k} < \theta_{2k+r} \quad (r \ge 1)\]
+    \[\theta_{2k-1} > \theta_{2k-1+r} \quad (r \ge 1)\]
+    奇数阶加料变小, 偶数阶加料变大.
+\end{theorem}
+
+\begin{theorem}[计算渐进分数]
+    连分数\(\theta\)的渐进分数\(\frac{P_n}{Q_n}\)满足:
+    \[P_n = x_n P_{n-1} + P_{n-2} ,\quad Q_n = x_n Q_{n-1} + Q_{n-2}\]
+\end{theorem}
+
+\textit{注: 黄金分割可以用连分数表示.}
+\[\phi = \frac{\sqrt{5} + 1}{2} = [1;\overline{1}]\]
+
+\begin{theorem}
+    \[\theta_0 < \theta_2 < \cdots < \theta_{2n} < \cdots < \theta_{2n+1} < \theta_{2n-1} < \cdots \theta_1\]
+\end{theorem}
+
+\begin{theorem}[什么连分数会循环]
+    有且只有正系数二次方程的实无理数根的连分数会循环.
+\end{theorem}
+
+\begin{theorem}[实数的最佳逼近]
+    对于实数\(\theta\), 称有理数\(\frac{p}{q}\)的最佳逼近, 当
+    \[\frac{p}{q} = \arg\min_r \left|\theta - r\right|\]
+\end{theorem}

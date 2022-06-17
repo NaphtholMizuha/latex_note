@@ -1,0 +1,117 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{copy}
+
+\PYG{k+kn}{import} \PYG{n+nn}{torch.utils.data}
+\PYG{k+kn}{import} \PYG{n+nn}{torch.nn} \PYG{k}{as} \PYG{n+nn}{nn}
+\PYG{k+kn}{import} \PYG{n+nn}{torchvision}
+
+\PYG{k+kn}{import} \PYG{n+nn}{trans}
+\PYG{k+kn}{import} \PYG{n+nn}{torchvision.datasets} \PYG{k}{as} \PYG{n+nn}{datasets}
+\PYG{k+kn}{import} \PYG{n+nn}{torch}
+
+\PYG{k+kn}{import} \PYG{n+nn}{matplotlib.pyplot} \PYG{k}{as} \PYG{n+nn}{plt}
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+\PYG{k+kn}{from} \PYG{n+nn}{cnn} \PYG{k+kn}{import} \PYG{n}{CNN}
+
+\PYG{n}{train\PYGZus{}path} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}data/train\PYGZsq{}}
+\PYG{n}{test\PYGZus{}path} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}data/test\PYGZsq{}}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{rcParams}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}font.sans\PYGZhy{}serif\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}Songti SC\PYGZsq{}}
+
+\PYG{k}{def} \PYG{n+nf}{imshow}\PYG{p}{(}\PYG{n}{inp}\PYG{p}{,} \PYG{n}{title}\PYG{o}{=}\PYG{k+kc}{None}\PYG{p}{):}
+    \PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Imshow for Tensor.\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{inp} \PYG{o}{=} \PYG{n}{inp}\PYG{o}{.}\PYG{n}{numpy}\PYG{p}{()}\PYG{o}{.}\PYG{n}{transpose}\PYG{p}{((}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{))}
+    \PYG{n}{mean} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{([}\PYG{l+m+mf}{0.485}\PYG{p}{,} \PYG{l+m+mf}{0.456}\PYG{p}{,} \PYG{l+m+mf}{0.406}\PYG{p}{])}
+    \PYG{n}{std} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{([}\PYG{l+m+mf}{0.229}\PYG{p}{,} \PYG{l+m+mf}{0.224}\PYG{p}{,} \PYG{l+m+mf}{0.225}\PYG{p}{])}
+    \PYG{n}{inp} \PYG{o}{=} \PYG{n}{std} \PYG{o}{*} \PYG{n}{inp} \PYG{o}{+} \PYG{n}{mean}
+    \PYG{n}{inp} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{clip}\PYG{p}{(}\PYG{n}{inp}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{inp}\PYG{p}{)}
+    \PYG{k}{if} \PYG{n}{title} \PYG{o+ow}{is} \PYG{o+ow}{not} \PYG{k+kc}{None}\PYG{p}{:}
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{n}{title}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{pause}\PYG{p}{(}\PYG{l+m+mf}{0.001}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} pause a bit so that plots are updated}
+
+\PYG{k}{if} \PYG{n+nv+vm}{\PYGZus{}\PYGZus{}name\PYGZus{}\PYGZus{}} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}\PYGZus{}\PYGZus{}main\PYGZus{}\PYGZus{}\PYGZsq{}}\PYG{p}{:}
+    \PYG{n}{train\PYGZus{}dataset} \PYG{o}{=} \PYG{n}{datasets}\PYG{o}{.}\PYG{n}{ImageFolder}\PYG{p}{(}\PYG{n}{train\PYGZus{}path}\PYG{p}{,} \PYG{n}{trans}\PYG{o}{.}\PYG{n}{transformer}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}train\PYGZsq{}}\PYG{p}{])}
+    \PYG{n}{train\PYGZus{}dataloader} \PYG{o}{=} \PYG{n}{torch}\PYG{o}{.}\PYG{n}{utils}\PYG{o}{.}\PYG{n}{data}\PYG{o}{.}\PYG{n}{DataLoader}\PYG{p}{(}\PYG{n}{train\PYGZus{}dataset}\PYG{p}{,} \PYG{n}{batch\PYGZus{}size}\PYG{o}{=}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{n}{shuffle}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{)}
+    \PYG{n}{test\PYGZus{}dataset} \PYG{o}{=} \PYG{n}{datasets}\PYG{o}{.}\PYG{n}{ImageFolder}\PYG{p}{(}\PYG{n}{test\PYGZus{}path}\PYG{p}{,} \PYG{n}{trans}\PYG{o}{.}\PYG{n}{transformer}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}test\PYGZsq{}}\PYG{p}{])}
+    \PYG{n}{test\PYGZus{}dataloader} \PYG{o}{=} \PYG{n}{torch}\PYG{o}{.}\PYG{n}{utils}\PYG{o}{.}\PYG{n}{data}\PYG{o}{.}\PYG{n}{DataLoader}\PYG{p}{(}\PYG{n}{test\PYGZus{}dataset}\PYG{p}{)}
+
+    \PYG{n}{train\PYGZus{}size} \PYG{o}{=} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{train\PYGZus{}dataset}\PYG{p}{)}
+    \PYG{n}{test\PYGZus{}size} \PYG{o}{=} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{test\PYGZus{}dataset}\PYG{p}{)}
+    \PYG{c+c1}{\PYGZsh{} parameters}
+    \PYG{n}{model} \PYG{o}{=} \PYG{n}{CNN}\PYG{p}{()}
+    \PYG{n}{optimizer} \PYG{o}{=} \PYG{n}{torch}\PYG{o}{.}\PYG{n}{optim}\PYG{o}{.}\PYG{n}{SGD}\PYG{p}{(}\PYG{n}{model}\PYG{o}{.}\PYG{n}{parameters}\PYG{p}{(),} \PYG{n}{lr}\PYG{o}{=}\PYG{l+m+mf}{0.0005}\PYG{p}{,} \PYG{n}{momentum}\PYG{o}{=}\PYG{l+m+mf}{0.9}\PYG{p}{)}
+    \PYG{n}{criterion} \PYG{o}{=} \PYG{n}{nn}\PYG{o}{.}\PYG{n}{CrossEntropyLoss}\PYG{p}{()}
+    \PYG{n}{num\PYGZus{}epoches} \PYG{o}{=} \PYG{l+m+mi}{24}
+
+    \PYG{c+c1}{\PYGZsh{} Get a batch of training data}
+    \PYG{n}{inputs}\PYG{p}{,} \PYG{n}{classes} \PYG{o}{=} \PYG{n+nb}{next}\PYG{p}{(}\PYG{n+nb}{iter}\PYG{p}{(}\PYG{n}{train\PYGZus{}dataloader}\PYG{p}{))}
+    \PYG{n}{class\PYGZus{}names} \PYG{o}{=} \PYG{n}{train\PYGZus{}dataset}\PYG{o}{.}\PYG{n}{classes}
+    \PYG{c+c1}{\PYGZsh{} Make a grid from batch}
+    \PYG{n}{out} \PYG{o}{=} \PYG{n}{torchvision}\PYG{o}{.}\PYG{n}{utils}\PYG{o}{.}\PYG{n}{make\PYGZus{}grid}\PYG{p}{(}\PYG{n}{inputs}\PYG{p}{)}
+
+    \PYG{n}{imshow}\PYG{p}{(}\PYG{n}{out}\PYG{p}{,} \PYG{n}{title}\PYG{o}{=}\PYG{p}{[}\PYG{n}{class\PYGZus{}names}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]} \PYG{k}{for} \PYG{n}{x} \PYG{o+ow}{in} \PYG{n}{classes}\PYG{p}{])}
+
+    \PYG{n}{best\PYGZus{}model\PYGZus{}weights} \PYG{o}{=} \PYG{n}{copy}\PYG{o}{.}\PYG{n}{deepcopy}\PYG{p}{(}\PYG{n}{model}\PYG{o}{.}\PYG{n}{state\PYGZus{}dict}\PYG{p}{())}
+    \PYG{n}{best\PYGZus{}accuracy} \PYG{o}{=} \PYG{l+m+mf}{0.0}
+
+    \PYG{n}{epoch\PYGZus{}losses} \PYG{o}{=} \PYG{p}{[]}
+    \PYG{n}{test\PYGZus{}accuracies} \PYG{o}{=} \PYG{p}{[]}
+
+    \PYG{n}{model}\PYG{o}{.}\PYG{n}{train}\PYG{p}{()}
+    \PYG{k}{for} \PYG{n}{epoch} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{num\PYGZus{}epoches}\PYG{p}{):}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Epoch }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{epoch} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{ / }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{num\PYGZus{}epoches}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+        \PYG{c+c1}{\PYGZsh{} Train}
+        \PYG{n}{running\PYGZus{}loss} \PYG{o}{=} \PYG{l+m+mf}{0.0}
+        \PYG{n}{running\PYGZus{}corrects} \PYG{o}{=} \PYG{l+m+mi}{0}
+        \PYG{k}{for} \PYG{n}{inputs}\PYG{p}{,} \PYG{n}{labels} \PYG{o+ow}{in} \PYG{n}{train\PYGZus{}dataloader}\PYG{p}{:}
+            \PYG{n}{optimizer}\PYG{o}{.}\PYG{n}{zero\PYGZus{}grad}\PYG{p}{()}
+            \PYG{k}{with} \PYG{n}{torch}\PYG{o}{.}\PYG{n}{set\PYGZus{}grad\PYGZus{}enabled}\PYG{p}{(}\PYG{k+kc}{True}\PYG{p}{):}
+                \PYG{c+c1}{\PYGZsh{} Forward}
+                \PYG{n}{outputs} \PYG{o}{=} \PYG{n}{model}\PYG{p}{(}\PYG{n}{inputs}\PYG{p}{)}
+                \PYG{n}{\PYGZus{}}\PYG{p}{,} \PYG{n}{preds} \PYG{o}{=} \PYG{n}{torch}\PYG{o}{.}\PYG{n}{max}\PYG{p}{(}\PYG{n}{outputs}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{)}
+                \PYG{n}{loss} \PYG{o}{=} \PYG{n}{criterion}\PYG{p}{(}\PYG{n}{outputs}\PYG{p}{,} \PYG{n}{labels}\PYG{p}{)}
+
+                \PYG{c+c1}{\PYGZsh{} Backward}
+                \PYG{n}{loss}\PYG{o}{.}\PYG{n}{backward}\PYG{p}{()}
+                \PYG{n}{optimizer}\PYG{o}{.}\PYG{n}{step}\PYG{p}{()}
+            \PYG{n}{running\PYGZus{}loss} \PYG{o}{+=} \PYG{n}{loss}\PYG{o}{.}\PYG{n}{item}\PYG{p}{()} \PYG{o}{*} \PYG{n}{inputs}\PYG{o}{.}\PYG{n}{size}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{)}
+            \PYG{n}{running\PYGZus{}corrects} \PYG{o}{+=} \PYG{n}{torch}\PYG{o}{.}\PYG{n}{sum}\PYG{p}{(}\PYG{n}{preds} \PYG{o}{==} \PYG{n}{labels}\PYG{o}{.}\PYG{n}{data}\PYG{p}{)}
+        \PYG{n}{epoch\PYGZus{}loss} \PYG{o}{=} \PYG{n}{running\PYGZus{}loss} \PYG{o}{/} \PYG{n}{train\PYGZus{}size}
+        \PYG{n}{epoch\PYGZus{}losses}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{epoch\PYGZus{}loss}\PYG{p}{)}
+        \PYG{n}{epoch\PYGZus{}accuracy} \PYG{o}{=} \PYG{n+nb}{float}\PYG{p}{(}\PYG{n}{running\PYGZus{}corrects}\PYG{p}{)} \PYG{o}{/} \PYG{n}{train\PYGZus{}size}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Train Set: Loss = }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{epoch\PYGZus{}loss}\PYG{l+s+si}{:}\PYG{l+s+s1}{.4f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, Accuracy = }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{epoch\PYGZus{}accuracy}\PYG{l+s+si}{:}\PYG{l+s+s1}{.4f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+
+        \PYG{c+c1}{\PYGZsh{} Test}
+        \PYG{n}{test\PYGZus{}loss} \PYG{o}{=} \PYG{l+m+mf}{0.0}
+        \PYG{n}{test\PYGZus{}correct} \PYG{o}{=} \PYG{l+m+mi}{0}
+        \PYG{k}{for} \PYG{n}{inputs}\PYG{p}{,} \PYG{n}{labels} \PYG{o+ow}{in} \PYG{n}{test\PYGZus{}dataloader}\PYG{p}{:}
+            \PYG{n}{outputs} \PYG{o}{=} \PYG{n}{model}\PYG{o}{.}\PYG{n}{forward}\PYG{p}{(}\PYG{n}{inputs}\PYG{p}{)}
+            \PYG{n}{\PYGZus{}}\PYG{p}{,} \PYG{n}{preds} \PYG{o}{=} \PYG{n}{torch}\PYG{o}{.}\PYG{n}{max}\PYG{p}{(}\PYG{n}{outputs}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{)}
+            \PYG{n}{loss} \PYG{o}{=} \PYG{n}{criterion}\PYG{p}{(}\PYG{n}{outputs}\PYG{p}{,} \PYG{n}{labels}\PYG{p}{)}
+
+            \PYG{n}{test\PYGZus{}loss} \PYG{o}{+=} \PYG{n}{loss}\PYG{o}{.}\PYG{n}{item}\PYG{p}{()}
+            \PYG{n}{test\PYGZus{}correct} \PYG{o}{+=} \PYG{n}{torch}\PYG{o}{.}\PYG{n}{sum}\PYG{p}{(}\PYG{n}{preds} \PYG{o}{==} \PYG{n}{labels}\PYG{o}{.}\PYG{n}{data}\PYG{p}{)} \PYG{o}{/} \PYG{n}{inputs}\PYG{o}{.}\PYG{n}{size}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{)}
+        \PYG{n}{test\PYGZus{}loss} \PYG{o}{=} \PYG{n}{test\PYGZus{}loss} \PYG{o}{/} \PYG{n}{test\PYGZus{}size}
+        \PYG{n}{test\PYGZus{}accuracy} \PYG{o}{=} \PYG{n+nb}{float}\PYG{p}{(}\PYG{n}{test\PYGZus{}correct}\PYG{p}{)} \PYG{o}{/} \PYG{n}{test\PYGZus{}size}
+        \PYG{n}{test\PYGZus{}accuracies}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{test\PYGZus{}accuracy}\PYG{p}{)}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Test Set: Loss = }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{test\PYGZus{}loss}\PYG{l+s+si}{:}\PYG{l+s+s1}{.4f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, Accuracy = }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{test\PYGZus{}accuracy}\PYG{l+s+si}{:}\PYG{l+s+s1}{.4f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZsq{}} \PYG{o}{*} \PYG{l+m+mi}{20}\PYG{p}{)}
+
+        \PYG{k}{if} \PYG{n}{test\PYGZus{}accuracy} \PYG{o}{\PYGZgt{}} \PYG{n}{best\PYGZus{}accuracy}\PYG{p}{:}
+            \PYG{n}{best\PYGZus{}accuracy} \PYG{o}{=} \PYG{n}{test\PYGZus{}accuracy}
+            \PYG{n}{best\PYGZus{}model\PYGZus{}weights} \PYG{o}{=} \PYG{n}{copy}\PYG{o}{.}\PYG{n}{deepcopy}\PYG{p}{(}\PYG{n}{model}\PYG{o}{.}\PYG{n}{state\PYGZus{}dict}\PYG{p}{())}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Best Accuracy: }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{test\PYGZus{}accuracy}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{model}\PYG{o}{.}\PYG{n}{load\PYGZus{}state\PYGZus{}dict}\PYG{p}{(}\PYG{n}{best\PYGZus{}model\PYGZus{}weights}\PYG{p}{)}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{epoch\PYGZus{}losses}\PYG{p}{)),} \PYG{n}{epoch\PYGZus{}losses}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}训练集损失函数随epoch下降情况\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{savefig}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}train\PYGZhy{}loss.pdf\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{test\PYGZus{}accuracies}\PYG{p}{)),} \PYG{n}{test\PYGZus{}accuracies}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}测试集准确率函数随epoch上升情况\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{savefig}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}test\PYGZhy{}acc.pdf\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+
+
+\end{Verbatim}

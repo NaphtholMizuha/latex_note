@@ -1,0 +1,35 @@
+\begin{thebibliography}{4}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{#1}
+\expandafter\ifx\csname urlstyle\endcsname\relax\else
+  \urlstyle{same}\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \DeclareUrlCommand\doi{\urlstyle{rm}}
+  \def\eprint#1#2{#2}
+\else
+  \def\doi#1{\href{https://doi.org/#1}{\nolinkurl{#1}}}
+  \let\eprint\href
+\fi
+
+\bibitem[霍然(2012)]{zhejiang:xianxing}
+霍然.
+\newblock 浙江:先行先试定密信息管理系统\allowbreak[J].
+\newblock 保密工作, 2012: 34-35.
+
+\bibitem[吴国华\ 等(2014)吴国华 and 霍晨晨]{yizhonggenjuwendang}
+吴国华, 霍晨晨.
+\newblock
+  一种根据文档相似度快速查找定密依据的方法\allowbreak[J].
+\newblock 保密科学技术, 2014: 12-15.
+
+\bibitem[刘名\ 等(2011)刘名 and 毕颖]{lunwoguodingmiquanzhuanzhi}
+刘名, 毕颖.
+\newblock 论我国定密权专职化制度的建立\allowbreak[J].
+\newblock 湖南社会科学, 2011: 98-100.
+
+\bibitem[李先哲(2018)]{jiyujiqixuexi}
+李先哲.
+\newblock 基于机器学习的数字化定密技术研究\allowbreak[D].
+\newblock 天津大学, 2018.
+
+\end{thebibliography}

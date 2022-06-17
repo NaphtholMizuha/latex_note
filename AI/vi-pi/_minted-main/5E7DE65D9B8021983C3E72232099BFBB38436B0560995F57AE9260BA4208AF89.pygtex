@@ -1,0 +1,239 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{}\PYGZsh{}\PYGZsh{} MDP Value Iteration and Policy Iteration}
+\PYG{k+kn}{import} \PYG{n+nn}{argparse}
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+\PYG{k+kn}{import} \PYG{n+nn}{gym}
+\PYG{k+kn}{import} \PYG{n+nn}{time}
+\PYG{k+kn}{from} \PYG{n+nn}{lake\PYGZus{}envs} \PYG{k+kn}{import} \PYG{o}{*}
+
+\PYG{n}{np}\PYG{o}{.}\PYG{n}{set\PYGZus{}printoptions}\PYG{p}{(}\PYG{n}{precision}\PYG{o}{=}\PYG{l+m+mi}{3}\PYG{p}{)}
+
+\PYG{n}{parser} \PYG{o}{=} \PYG{n}{argparse}\PYG{o}{.}\PYG{n}{ArgumentParser}\PYG{p}{(}\PYG{n}{description}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}A program to run assignment 1 implementations.\PYGZsq{}}\PYG{p}{,} \PYG{n}{formatter\PYGZus{}class}\PYG{o}{=}\PYG{n}{argparse}\PYG{o}{.}\PYG{n}{ArgumentDefaultsHelpFormatter}\PYG{p}{)}
+
+\PYG{n}{parser}\PYG{o}{.}\PYG{n}{add\PYGZus{}argument}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}\PYGZhy{}\PYGZhy{}env\PYGZdq{}}\PYG{p}{,} 
+					\PYG{n}{help}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}The name of the environment to run your algorithm on.\PYGZdq{}}\PYG{p}{,} 
+					\PYG{n}{choices}\PYG{o}{=}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}Deterministic\PYGZhy{}4x4\PYGZhy{}FrozenLake\PYGZhy{}v0\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}Stochastic\PYGZhy{}4x4\PYGZhy{}FrozenLake\PYGZhy{}v0\PYGZdq{}}\PYG{p}{],}
+					\PYG{n}{default}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}Deterministic\PYGZhy{}4x4\PYGZhy{}FrozenLake\PYGZhy{}v0\PYGZdq{}}\PYG{p}{)}
+
+\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+\PYG{l+s+sd}{For policy\PYGZus{}evaluation, policy\PYGZus{}improvement, policy\PYGZus{}iteration and value\PYGZus{}iteration,}
+\PYG{l+s+sd}{the parameters P, nS, nA, gamma are defined as follows:}
+
+\PYG{l+s+sd}{	P: nested dictionary}
+\PYG{l+s+sd}{		From gym.core.Environment}
+\PYG{l+s+sd}{		For each pair of states in [1, nS] and actions in [1, nA], P[state][action] is a}
+\PYG{l+s+sd}{		tuple of the form (probability, nextstate, reward, terminal) where}
+\PYG{l+s+sd}{			\PYGZhy{} probability: float}
+\PYG{l+s+sd}{				the probability of transitioning from \PYGZdq{}state\PYGZdq{} to \PYGZdq{}nextstate\PYGZdq{} with \PYGZdq{}action\PYGZdq{}}
+\PYG{l+s+sd}{			\PYGZhy{} nextstate: int}
+\PYG{l+s+sd}{				denotes the state we transition to (in range [0, nS \PYGZhy{} 1])}
+\PYG{l+s+sd}{			\PYGZhy{} reward: int}
+\PYG{l+s+sd}{				either 0 or 1, the reward for transitioning from \PYGZdq{}state\PYGZdq{} to}
+\PYG{l+s+sd}{				\PYGZdq{}nextstate\PYGZdq{} with \PYGZdq{}action\PYGZdq{}}
+\PYG{l+s+sd}{			\PYGZhy{} terminal: bool}
+\PYG{l+s+sd}{			  True when \PYGZdq{}nextstate\PYGZdq{} is a terminal state (hole or goal), False otherwise}
+\PYG{l+s+sd}{	nS: int}
+\PYG{l+s+sd}{		number of states in the environment}
+\PYG{l+s+sd}{	nA: int}
+\PYG{l+s+sd}{		number of actions in the environment}
+\PYG{l+s+sd}{	gamma: float}
+\PYG{l+s+sd}{		Discount factor. Number in range [0, 1)}
+\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+
+
+\PYG{k}{def} \PYG{n+nf}{policy\PYGZus{}evaluation}\PYG{p}{(}\PYG{n}{P}\PYG{p}{,} \PYG{n}{nS}\PYG{p}{,} \PYG{n}{nA}\PYG{p}{,} \PYG{n}{policy}\PYG{p}{,} \PYG{n}{gamma}\PYG{o}{=}\PYG{l+m+mf}{0.9}\PYG{p}{,} \PYG{n}{tol}\PYG{o}{=}\PYG{l+m+mf}{1e\PYGZhy{}3}\PYG{p}{):}
+	\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Evaluate the value function from a given policy.}
+
+\PYG{l+s+sd}{	Parameters}
+\PYG{l+s+sd}{	\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{l+s+sd}{	P, nS, nA, gamma:}
+\PYG{l+s+sd}{		defined at beginning of file}
+\PYG{l+s+sd}{	policy: np.array[nS]}
+\PYG{l+s+sd}{		The policy to evaluate. Maps states to actions.}
+\PYG{l+s+sd}{	tol: float}
+\PYG{l+s+sd}{		Terminate policy evaluation when}
+\PYG{l+s+sd}{			max |value\PYGZus{}function(s) \PYGZhy{} prev\PYGZus{}value\PYGZus{}function(s)| \PYGZlt{} tol}
+\PYG{l+s+sd}{	Returns}
+\PYG{l+s+sd}{	\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{l+s+sd}{	value\PYGZus{}function: np.ndarray[nS]}
+\PYG{l+s+sd}{		The value function of the given policy, where value\PYGZus{}function[s] is}
+\PYG{l+s+sd}{		the value of state s}
+\PYG{l+s+sd}{	\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+
+	\PYG{n}{value\PYGZus{}function} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{nS}\PYG{p}{)}
+	\PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{0}
+	\PYG{k}{while} \PYG{k+kc}{True}\PYG{p}{:}
+		\PYG{n}{prev\PYGZus{}value\PYGZus{}function} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{copy}\PYG{p}{(}\PYG{n}{value\PYGZus{}function}\PYG{p}{)}
+		\PYG{k}{for} \PYG{n}{state} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{nS}\PYG{p}{):}
+			\PYG{n}{action} \PYG{o}{=} \PYG{n}{policy}\PYG{p}{[}\PYG{n}{state}\PYG{p}{]}
+			\PYG{n}{value\PYGZus{}function}\PYG{p}{[}\PYG{n}{state}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb}{sum}\PYG{p}{(}
+				\PYG{p}{[}\PYG{n}{prob} \PYG{o}{*} \PYG{p}{(}\PYG{n}{reward} \PYG{o}{+} \PYG{n}{gamma} \PYG{o}{*} \PYG{n}{prev\PYGZus{}value\PYGZus{}function}\PYG{p}{[}\PYG{n}{next\PYGZus{}state}\PYG{p}{])}
+				 \PYG{k}{for} \PYG{n}{prob}\PYG{p}{,} \PYG{n}{next\PYGZus{}state}\PYG{p}{,} \PYG{n}{reward}\PYG{p}{,} \PYG{n}{done} \PYG{o+ow}{in} \PYG{n}{P}\PYG{p}{[}\PYG{n}{state}\PYG{p}{][}\PYG{n}{action}\PYG{p}{]]}
+			\PYG{p}{)}
+		\PYG{k}{if} \PYG{n}{np}\PYG{o}{.}\PYG{n}{max}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{fabs}\PYG{p}{(}\PYG{n}{value\PYGZus{}function} \PYG{o}{\PYGZhy{}} \PYG{n}{prev\PYGZus{}value\PYGZus{}function}\PYG{p}{))} \PYG{o}{\PYGZlt{}} \PYG{n}{tol}\PYG{p}{:}
+			\PYG{k}{break}
+		\PYG{k}{else}\PYG{p}{:}
+			\PYG{n}{i} \PYG{o}{+=} \PYG{l+m+mi}{1}
+
+	\PYG{k}{return} \PYG{n}{value\PYGZus{}function}
+
+
+\PYG{k}{def} \PYG{n+nf}{policy\PYGZus{}improvement}\PYG{p}{(}\PYG{n}{P}\PYG{p}{,} \PYG{n}{nS}\PYG{p}{,} \PYG{n}{nA}\PYG{p}{,} \PYG{n}{value\PYGZus{}from\PYGZus{}policy}\PYG{p}{,} \PYG{n}{policy}\PYG{p}{,} \PYG{n}{gamma}\PYG{o}{=}\PYG{l+m+mf}{0.9}\PYG{p}{):}
+	\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Given the value function from policy improve the policy.}
+
+\PYG{l+s+sd}{	Parameters}
+\PYG{l+s+sd}{	\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{l+s+sd}{	P, nS, nA, gamma:}
+\PYG{l+s+sd}{		defined at beginning of file}
+\PYG{l+s+sd}{	value\PYGZus{}from\PYGZus{}policy: np.ndarray}
+\PYG{l+s+sd}{		The value calculated from the policy}
+\PYG{l+s+sd}{	policy: np.array}
+\PYG{l+s+sd}{		The previous policy.}
+
+\PYG{l+s+sd}{	Returns}
+\PYG{l+s+sd}{	\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{l+s+sd}{	new\PYGZus{}policy: np.ndarray[nS]}
+\PYG{l+s+sd}{		An array of integers. Each integer is the optimal action to take}
+\PYG{l+s+sd}{		in that state according to the environment dynamics and the}
+\PYG{l+s+sd}{		given value function.}
+\PYG{l+s+sd}{	\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+
+	\PYG{n}{new\PYGZus{}policy} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{nS}\PYG{p}{,} \PYG{n}{dtype}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}int\PYGZsq{}}\PYG{p}{)}
+
+	\PYG{k}{for} \PYG{n}{state} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{nS}\PYG{p}{):}
+		\PYG{n}{q\PYGZus{}value} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{nA}\PYG{p}{)}
+		\PYG{k}{for} \PYG{n}{action} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{nA}\PYG{p}{):}
+			\PYG{k}{for} \PYG{n}{next\PYGZus{}sr} \PYG{o+ow}{in} \PYG{n}{P}\PYG{p}{[}\PYG{n}{state}\PYG{p}{][}\PYG{n}{action}\PYG{p}{]:}
+				\PYG{n}{prob}\PYG{p}{,} \PYG{n}{next\PYGZus{}state}\PYG{p}{,} \PYG{n}{reward}\PYG{p}{,} \PYG{n}{done} \PYG{o}{=} \PYG{n}{next\PYGZus{}sr}
+				\PYG{n}{q\PYGZus{}value}\PYG{p}{[}\PYG{n}{action}\PYG{p}{]} \PYG{o}{+=} \PYG{n}{prob} \PYG{o}{*} \PYG{p}{(}\PYG{n}{reward} \PYG{o}{+} \PYG{n}{gamma} \PYG{o}{*} \PYG{n}{value\PYGZus{}from\PYGZus{}policy}\PYG{p}{[}\PYG{n}{next\PYGZus{}state}\PYG{p}{])}
+		\PYG{n}{new\PYGZus{}policy}\PYG{p}{[}\PYG{n}{state}\PYG{p}{]} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{argmax}\PYG{p}{(}\PYG{n}{q\PYGZus{}value}\PYG{p}{)}
+
+	\PYG{k}{return} \PYG{n}{new\PYGZus{}policy}
+
+
+\PYG{k}{def} \PYG{n+nf}{policy\PYGZus{}iteration}\PYG{p}{(}\PYG{n}{P}\PYG{p}{,} \PYG{n}{nS}\PYG{p}{,} \PYG{n}{nA}\PYG{p}{,} \PYG{n}{gamma}\PYG{o}{=}\PYG{l+m+mf}{0.9}\PYG{p}{,} \PYG{n}{tol}\PYG{o}{=}\PYG{l+m+mf}{10e\PYGZhy{}3}\PYG{p}{):}
+	\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Runs policy iteration.}
+
+\PYG{l+s+sd}{	You should call the policy\PYGZus{}evaluation() and policy\PYGZus{}improvement() methods to}
+\PYG{l+s+sd}{	implement this method.}
+
+\PYG{l+s+sd}{	Parameters}
+\PYG{l+s+sd}{	\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{l+s+sd}{	P, nS, nA, gamma:}
+\PYG{l+s+sd}{		defined at beginning of file}
+\PYG{l+s+sd}{	tol: float}
+\PYG{l+s+sd}{		tol parameter used in policy\PYGZus{}evaluation()}
+\PYG{l+s+sd}{	Returns:}
+\PYG{l+s+sd}{	\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{l+s+sd}{	value\PYGZus{}function: np.ndarray[nS]}
+\PYG{l+s+sd}{	policy: np.ndarray[nS]}
+\PYG{l+s+sd}{	\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+
+	\PYG{n}{policy} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{nS}\PYG{p}{,} \PYG{n}{dtype}\PYG{o}{=}\PYG{n+nb}{int}\PYG{p}{)}
+	\PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{0}
+	\PYG{k}{while} \PYG{k+kc}{True}\PYG{p}{:}
+		\PYG{n}{value\PYGZus{}function} \PYG{o}{=} \PYG{n}{policy\PYGZus{}evaluation}\PYG{p}{(}\PYG{n}{P}\PYG{p}{,} \PYG{n}{nS}\PYG{p}{,} \PYG{n}{nA}\PYG{p}{,} \PYG{n}{policy}\PYG{p}{)}
+		\PYG{n}{next\PYGZus{}policy} \PYG{o}{=} \PYG{n}{policy\PYGZus{}improvement}\PYG{p}{(}\PYG{n}{P}\PYG{p}{,} \PYG{n}{nS}\PYG{p}{,} \PYG{n}{nA}\PYG{p}{,} \PYG{n}{value\PYGZus{}function}\PYG{p}{,} \PYG{n}{policy}\PYG{p}{)}
+		\PYG{k}{if} \PYG{n}{np}\PYG{o}{.}\PYG{n}{all}\PYG{p}{(}\PYG{n}{policy} \PYG{o}{==} \PYG{n}{next\PYGZus{}policy}\PYG{p}{):}
+			\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Policy Iteration converged as step }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{i}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+			\PYG{k}{break}
+		\PYG{k}{else}\PYG{p}{:}
+			\PYG{n}{policy} \PYG{o}{=} \PYG{n}{next\PYGZus{}policy}
+			\PYG{n}{i} \PYG{o}{+=} \PYG{l+m+mi}{1}
+	\PYG{k}{return} \PYG{n}{value\PYGZus{}function}\PYG{p}{,} \PYG{n}{policy}
+
+
+\PYG{k}{def} \PYG{n+nf}{value\PYGZus{}iteration}\PYG{p}{(}\PYG{n}{P}\PYG{p}{,} \PYG{n}{nS}\PYG{p}{,} \PYG{n}{nA}\PYG{p}{,} \PYG{n}{gamma}\PYG{o}{=}\PYG{l+m+mf}{0.9}\PYG{p}{,} \PYG{n}{tol}\PYG{o}{=}\PYG{l+m+mf}{1e\PYGZhy{}3}\PYG{p}{):}
+	\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+\PYG{l+s+sd}{	Learn value function and policy by using value iteration method for a given}
+\PYG{l+s+sd}{	gamma and environment.}
+
+\PYG{l+s+sd}{	Parameters:}
+\PYG{l+s+sd}{	\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{l+s+sd}{	`P`, `nS`, `nA`, `gamma`:}
+\PYG{l+s+sd}{		defined at beginning of file}
+\PYG{l+s+sd}{	tol: float}
+\PYG{l+s+sd}{		Terminate value iteration when}
+\PYG{l+s+sd}{			max |value\PYGZus{}function(s) \PYGZhy{} prev\PYGZus{}value\PYGZus{}function(s)| \PYGZlt{} tol}
+\PYG{l+s+sd}{	Returns:}
+\PYG{l+s+sd}{	\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{l+s+sd}{	value\PYGZus{}function: np.ndarray[nS]}
+\PYG{l+s+sd}{	policy: np.ndarray[nS]}
+\PYG{l+s+sd}{	\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+
+	\PYG{n}{value\PYGZus{}function} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{nS}\PYG{p}{)}
+	\PYG{n}{policy} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{nS}\PYG{p}{,} \PYG{n}{dtype}\PYG{o}{=}\PYG{n+nb}{int}\PYG{p}{)}
+	\PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{0}
+	\PYG{k}{while} \PYG{k+kc}{True}\PYG{p}{:}
+		\PYG{n}{prev\PYGZus{}value\PYGZus{}function} \PYG{o}{=} \PYG{n}{value\PYGZus{}function}\PYG{o}{.}\PYG{n}{copy}\PYG{p}{()}
+
+		\PYG{k}{for} \PYG{n}{state} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{nS}\PYG{p}{):}
+			\PYG{n}{q\PYGZus{}values} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{nA}\PYG{p}{)}
+			\PYG{k}{for} \PYG{n}{action} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{nA}\PYG{p}{):}
+				\PYG{k}{for} \PYG{n}{next\PYGZus{}sr} \PYG{o+ow}{in} \PYG{n}{P}\PYG{p}{[}\PYG{n}{state}\PYG{p}{][}\PYG{n}{action}\PYG{p}{]:}
+					\PYG{n}{prob}\PYG{p}{,} \PYG{n}{next\PYGZus{}state}\PYG{p}{,} \PYG{n}{reward}\PYG{p}{,} \PYG{n}{done} \PYG{o}{=} \PYG{n}{next\PYGZus{}sr}
+					\PYG{n}{q\PYGZus{}values}\PYG{p}{[}\PYG{n}{action}\PYG{p}{]} \PYG{o}{+=} \PYG{n}{prob} \PYG{o}{*} \PYG{p}{(}\PYG{n}{reward} \PYG{o}{+} \PYG{n}{gamma} \PYG{o}{*} \PYG{n}{prev\PYGZus{}value\PYGZus{}function}\PYG{p}{[}\PYG{n}{next\PYGZus{}state}\PYG{p}{])}
+			\PYG{n}{value\PYGZus{}function}\PYG{p}{[}\PYG{n}{state}\PYG{p}{]} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{max}\PYG{p}{(}\PYG{n}{q\PYGZus{}values}\PYG{p}{)}
+			\PYG{n}{policy}\PYG{p}{[}\PYG{n}{state}\PYG{p}{]} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{argmax}\PYG{p}{(}\PYG{n}{q\PYGZus{}values}\PYG{p}{)}
+
+		\PYG{n}{i} \PYG{o}{+=} \PYG{l+m+mi}{1}
+
+		\PYG{k}{if} \PYG{n}{np}\PYG{o}{.}\PYG{n}{max}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{fabs}\PYG{p}{(}\PYG{n}{value\PYGZus{}function} \PYG{o}{\PYGZhy{}} \PYG{n}{prev\PYGZus{}value\PYGZus{}function}\PYG{p}{))} \PYG{o}{\PYGZlt{}} \PYG{n}{tol}\PYG{p}{:}
+			\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}Convergence at iteration }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{i}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+			\PYG{k}{break}
+
+	\PYG{k}{return} \PYG{n}{value\PYGZus{}function}\PYG{p}{,} \PYG{n}{policy}
+
+
+\PYG{k}{def} \PYG{n+nf}{render\PYGZus{}single}\PYG{p}{(}\PYG{n}{env}\PYG{p}{,} \PYG{n}{policy}\PYG{p}{,} \PYG{n}{max\PYGZus{}steps}\PYG{o}{=}\PYG{l+m+mi}{100}\PYG{p}{):}
+	\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+\PYG{l+s+sd}{	This function does not need to be modified}
+\PYG{l+s+sd}{	Renders policy once on environment. Watch your agent play!}
+
+\PYG{l+s+sd}{	Parameters}
+\PYG{l+s+sd}{	\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{l+s+sd}{	env: gym.core.Environment}
+\PYG{l+s+sd}{		Environment to play on. Must have nS, nA, and P as attributes.}
+\PYG{l+s+sd}{	Policy: np.array of shape [env.nS]}
+\PYG{l+s+sd}{		The action to take at a given state}
+\PYG{l+s+sd}{	\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+	\PYG{n}{episode\PYGZus{}reward} \PYG{o}{=} \PYG{l+m+mi}{0}
+	\PYG{n}{ob} \PYG{o}{=} \PYG{n}{env}\PYG{o}{.}\PYG{n}{reset}\PYG{p}{()}
+	\PYG{n}{done} \PYG{o}{=} \PYG{k+kc}{False}
+	\PYG{k}{for} \PYG{n}{t} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{max\PYGZus{}steps}\PYG{p}{):}
+		\PYG{n}{env}\PYG{o}{.}\PYG{n}{render}\PYG{p}{()}
+		\PYG{n}{time}\PYG{o}{.}\PYG{n}{sleep}\PYG{p}{(}\PYG{l+m+mf}{0.25}\PYG{p}{)}
+		\PYG{n}{a} \PYG{o}{=} \PYG{n}{policy}\PYG{p}{[}\PYG{n}{ob}\PYG{p}{]}
+		\PYG{n}{ob}\PYG{p}{,} \PYG{n}{rew}\PYG{p}{,} \PYG{n}{done}\PYG{p}{,} \PYG{n}{\PYGZus{}} \PYG{o}{=} \PYG{n}{env}\PYG{o}{.}\PYG{n}{step}\PYG{p}{(}\PYG{n}{a}\PYG{p}{)}
+		\PYG{n}{episode\PYGZus{}reward} \PYG{o}{+=} \PYG{n}{rew}
+		\PYG{k}{if} \PYG{n}{done}\PYG{p}{:}
+			\PYG{k}{break}
+	\PYG{n}{env}\PYG{o}{.}\PYG{n}{render}\PYG{p}{()}
+	\PYG{k}{if} \PYG{o+ow}{not} \PYG{n}{done}\PYG{p}{:}
+		\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}The agent didn\PYGZsq{}t reach a terminal state in }\PYG{l+s+si}{\PYGZob{}\PYGZcb{}}\PYG{l+s+s2}{ steps.\PYGZdq{}}\PYG{o}{.}\PYG{n}{format}\PYG{p}{(}\PYG{n}{max\PYGZus{}steps}\PYG{p}{))}
+	\PYG{k}{else}\PYG{p}{:}
+		\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Episode reward: }\PYG{l+s+si}{\PYGZpc{}f}\PYG{l+s+s2}{\PYGZdq{}} \PYG{o}{\PYGZpc{}} \PYG{n}{episode\PYGZus{}reward}\PYG{p}{)}
+
+
+\PYG{c+c1}{\PYGZsh{} Edit below to run policy and value iteration on different environments and}
+\PYG{c+c1}{\PYGZsh{} visualize the resulting policies in action!}
+\PYG{c+c1}{\PYGZsh{} You may change the parameters in the functions below}
+\PYG{k}{if} \PYG{n+nv+vm}{\PYGZus{}\PYGZus{}name\PYGZus{}\PYGZus{}} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}\PYGZus{}\PYGZus{}main\PYGZus{}\PYGZus{}\PYGZdq{}}\PYG{p}{:}
+	\PYG{c+c1}{\PYGZsh{} read in script argument}
+	\PYG{n}{args} \PYG{o}{=} \PYG{n}{parser}\PYG{o}{.}\PYG{n}{parse\PYGZus{}args}\PYG{p}{()}
+	
+	\PYG{c+c1}{\PYGZsh{} Make gym environment}
+	\PYG{n}{env} \PYG{o}{=} \PYG{n}{gym}\PYG{o}{.}\PYG{n}{make}\PYG{p}{(}\PYG{n}{args}\PYG{o}{.}\PYG{n}{env}\PYG{p}{)}
+
+	\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{\PYGZdq{}} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}\PYGZhy{}\PYGZdq{}}\PYG{o}{*}\PYG{l+m+mi}{25} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{Beginning Policy Iteration}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{\PYGZdq{}} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}\PYGZhy{}\PYGZdq{}}\PYG{o}{*}\PYG{l+m+mi}{25}\PYG{p}{)}
+
+	\PYG{n}{V\PYGZus{}pi}\PYG{p}{,} \PYG{n}{p\PYGZus{}pi} \PYG{o}{=} \PYG{n}{policy\PYGZus{}iteration}\PYG{p}{(}\PYG{n}{env}\PYG{o}{.}\PYG{n}{P}\PYG{p}{,} \PYG{n}{env}\PYG{o}{.}\PYG{n}{nS}\PYG{p}{,} \PYG{n}{env}\PYG{o}{.}\PYG{n}{nA}\PYG{p}{,} \PYG{n}{gamma}\PYG{o}{=}\PYG{l+m+mf}{0.9}\PYG{p}{,} \PYG{n}{tol}\PYG{o}{=}\PYG{l+m+mf}{1e\PYGZhy{}3}\PYG{p}{)}
+	\PYG{n}{render\PYGZus{}single}\PYG{p}{(}\PYG{n}{env}\PYG{p}{,} \PYG{n}{p\PYGZus{}pi}\PYG{p}{,} \PYG{l+m+mi}{100}\PYG{p}{)}
+
+	\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{\PYGZdq{}} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}\PYGZhy{}\PYGZdq{}}\PYG{o}{*}\PYG{l+m+mi}{25} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{Beginning Value Iteration}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{\PYGZdq{}} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}\PYGZhy{}\PYGZdq{}}\PYG{o}{*}\PYG{l+m+mi}{25}\PYG{p}{)}
+
+	\PYG{n}{V\PYGZus{}vi}\PYG{p}{,} \PYG{n}{p\PYGZus{}vi} \PYG{o}{=} \PYG{n}{value\PYGZus{}iteration}\PYG{p}{(}\PYG{n}{env}\PYG{o}{.}\PYG{n}{P}\PYG{p}{,} \PYG{n}{env}\PYG{o}{.}\PYG{n}{nS}\PYG{p}{,} \PYG{n}{env}\PYG{o}{.}\PYG{n}{nA}\PYG{p}{,} \PYG{n}{gamma}\PYG{o}{=}\PYG{l+m+mf}{0.9}\PYG{p}{,} \PYG{n}{tol}\PYG{o}{=}\PYG{l+m+mf}{1e\PYGZhy{}3}\PYG{p}{)}
+	\PYG{n}{render\PYGZus{}single}\PYG{p}{(}\PYG{n}{env}\PYG{p}{,} \PYG{n}{p\PYGZus{}vi}\PYG{p}{,} \PYG{l+m+mi}{100}\PYG{p}{)}
+
+
+\end{Verbatim}

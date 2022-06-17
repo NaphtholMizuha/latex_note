@@ -3,7 +3,6 @@
     \begin{answer}
         经计算:
         \[2^{12} \equiv 3^{3} \equiv 10^6 \equiv 1 \pmod{13}\]
-        所以,
         \[\ord{13}{2}=12,\quad \ord{13}{3}=3, \quad \ord{13}{10}=6\]
     \end{answer}
 \end{problem}
@@ -22,16 +21,39 @@
 \begin{answer}
     容易得到 \(a \ne 1\), 且
     \[a^n = m + 1 \equiv 1 \pmod{m}\]
-    另一方面, 由于 \(\forall k \in \Z^+ : a^{}\)
+    由题设知\(a > 1\), 则\(\forall k(1 \le k < n): 1 < a^k < m+1\).
+    因此\(n\)是满足\(a^n \equiv1 \pmod{m}\)的最小整数, 即
+    \(\ord{m}{a} = n\).
+
+    又由Euler公式得到\(a^{\varphi(m)} \equiv 1 \pmod{m}\).
+    所以可以得到\(\ord{m}{a} \varphi(m)\)即\(n \mid \varphi(m)\)
 \end{answer}
 \end{problem}
 
 \begin{problem}
     求模 \(167^2\) 的原根.
+\begin{answer}
+    已知167是素数, 所以\(167^2\)存在原根.先找167的原根\(g\).
+    \(167 - 1 = 166 = 2 \cdot 83\).
+    
+    已知\(g\)满足\(g^{\frac{p-1}{q_i}} \not\equiv 1 \pmod{167}\),
+    其中\(q_i = 2, 83\). 经过检验, \(g = 6\). 所以\(g_1 = g = 6\)或\(g_2 = g + p = 173\)是模167的原根.
+    计算验证:
+    \[g_1^{167-1} \equiv 1 + 114 \cdot 167, \quad g_2^{167-1} \equiv 1 + 86 \cdot 167 \pmod{167^2}\]
+    因此\(g_1 = 6, g_2 = 173\)都是模\(167^2\)的原根.
+\end{answer}
 \end{problem}
 
 \begin{problem}
-    求解同余方程
-    \[x^{22} \equiv 5 \pmod{41}\]
+    求解同余方程\(x^{22} \equiv 5 \pmod{41}\).
+\begin{answer}
+    已知模41的一个原根是6,且\(\gcd(22, \varphi(41)) = 2\), 
+    可以得知这个方程解数为2.
+    又\(\ind{6}{5} \equiv 22 \pmod{41} \).
+
+    可以得出原方程等价于\(22\ind{6}{x} = \ind{6}{5}\pmod{40}\).解得\(\ind{6}{x} \equiv 1, 21 \pmod{40}\).
+    
+    因此\(x \equiv 6, 35 \pmod{41}\).
+\end{answer}
 \end{problem}
 

@@ -1,0 +1,18 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{torchvision.transforms} \PYG{k}{as} \PYG{n+nn}{transforms}
+
+\PYG{n}{transformer} \PYG{o}{=} \PYG{p}{\PYGZob{}}
+    \PYG{l+s+s1}{\PYGZsq{}train\PYGZsq{}}\PYG{p}{:} \PYG{n}{transforms}\PYG{o}{.}\PYG{n}{Compose}\PYG{p}{([}
+        \PYG{n}{transforms}\PYG{o}{.}\PYG{n}{RandomResizedCrop}\PYG{p}{(}\PYG{l+m+mi}{128}\PYG{p}{),}
+        \PYG{n}{transforms}\PYG{o}{.}\PYG{n}{RandomHorizontalFlip}\PYG{p}{(),}
+        \PYG{n}{transforms}\PYG{o}{.}\PYG{n}{ToTensor}\PYG{p}{(),}
+        \PYG{n}{transforms}\PYG{o}{.}\PYG{n}{Normalize}\PYG{p}{([}\PYG{l+m+mf}{0.485}\PYG{p}{,} \PYG{l+m+mf}{0.456}\PYG{p}{,} \PYG{l+m+mf}{0.406}\PYG{p}{],} \PYG{p}{[}\PYG{l+m+mf}{0.229}\PYG{p}{,} \PYG{l+m+mf}{0.224}\PYG{p}{,} \PYG{l+m+mf}{0.225}\PYG{p}{])}
+    \PYG{p}{]),}
+    \PYG{l+s+s1}{\PYGZsq{}test\PYGZsq{}}\PYG{p}{:} \PYG{n}{transforms}\PYG{o}{.}\PYG{n}{Compose}\PYG{p}{([}
+        \PYG{n}{transforms}\PYG{o}{.}\PYG{n}{Resize}\PYG{p}{(}\PYG{l+m+mi}{200}\PYG{p}{),}
+        \PYG{n}{transforms}\PYG{o}{.}\PYG{n}{CenterCrop}\PYG{p}{(}\PYG{l+m+mi}{128}\PYG{p}{),}
+        \PYG{n}{transforms}\PYG{o}{.}\PYG{n}{ToTensor}\PYG{p}{(),}
+        \PYG{n}{transforms}\PYG{o}{.}\PYG{n}{Normalize}\PYG{p}{([}\PYG{l+m+mf}{0.485}\PYG{p}{,} \PYG{l+m+mf}{0.456}\PYG{p}{,} \PYG{l+m+mf}{0.406}\PYG{p}{],} \PYG{p}{[}\PYG{l+m+mf}{0.229}\PYG{p}{,} \PYG{l+m+mf}{0.224}\PYG{p}{,} \PYG{l+m+mf}{0.225}\PYG{p}{])}
+    \PYG{p}{])}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
