@@ -1,5 +1,5 @@
 \ProvidesClass{mystyle}
-\LoadClass{ctexart}
+\LoadClass[12pt]{ctexart}
 \RequirePackage{xeCJK}
 \RequirePackage{CJKnumb}
 \RequirePackage{graphicx}
@@ -15,6 +15,8 @@
 \RequirePackage{indentfirst}
 \RequirePackage{zhnumber}
 \RequirePackage{booktabs}
+
+\usepackage[sort&compress]{gbt7714}
 \geometry{top=1in,bottom=1in,left=1in,right=1in}
 \setcounter{secnumdepth}{3}
 \renewcommand\thesection{\CJKnumber{\arabic{section}}、}
@@ -38,3 +40,5 @@
 
 \titlespacing{\subsection}{1em}{*4}{*1.5}
 \titlespacing{\subsubsection}{1em}{*4}{*1.5}
+
+\bibliographystyle{gbt7714-numerical}
