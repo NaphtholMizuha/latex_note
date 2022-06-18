@@ -15,7 +15,9 @@
 \RequirePackage{indentfirst}
 \RequirePackage{zhnumber}
 \RequirePackage{booktabs}
-
+\RequirePackage{amssymb}
+\RequirePackage{mathrsfs}
+\RequirePackage{amssymb}
 \usepackage[sort&compress]{gbt7714}
 \geometry{top=1in,bottom=1in,left=1in,right=1in}
 \setcounter{secnumdepth}{3}

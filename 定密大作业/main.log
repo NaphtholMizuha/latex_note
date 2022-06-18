@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  16 JUN 2022 15:53
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  18 JUN 2022 15:16
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -432,6 +432,18 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \@thisruleclass=\count325
 \@lastruleclass=\count326
 \@thisrulewidth=\dimen283
+) (/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+ (/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+)) (/usr/local/texlive/2021/texmf-dist/tex/latex/jknapltx/mathrsfs.sty
+Package: mathrsfs 1996/01/01 Math RSFS package v1.0 (jk)
+\symrsfs=\mathgroup6
 ) (/usr/local/texlive/2021/texmf-dist/tex/latex/gbt7714/gbt7714.sty
 Package: gbt7714 2021/12/08 v2.1.3 GB/T 7714 BibTeX Style
  (/usr/local/texlive/2021/texmf-dist/tex/latex/natbib/natbib.sty
@@ -489,7 +501,7 @@ LaTeX Font Info:    ... okay on input line 7.
 Package fontspec Info: Adjusting the maths setup (use [no-math] to avoid
 (fontspec)             this).
 
-\symlegacymaths=\mathgroup4
+\symlegacymaths=\mathgroup7
 LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
 (Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 7.
 LaTeX Font Info:    Redeclaring math accent \acute on input line 7.
@@ -577,19 +589,39 @@ LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 \c@lstlisting=\count328
-(./intro.tex) (./utils.tex [1
+LaTeX Font Info:    Trying to load font information for U+msa on input line 8.
+(/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 8.
+ (/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 8.
+ (/usr/local/texlive/2021/texmf-dist/tex/latex/jknapltx/ursfs.fd
+File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
+) (./intro.tex) (./utils.tex [1
 
 ]
 LaTeX Font Info:    Font shape `TU/SimSun(0)/m/sl' in size <12> not available
 (Font)              Font shape `TU/SimSun(0)/m/it' tried instead on input line 65.
- [2]) [3] (./application.tex) (./main.bbl) [4] (./main.aux) ) 
+ [2] [3] [4]) (./application.tex
+File: figure/授权.pdf Graphic file (type pdf)
+<use figure/授权.pdf>
+ [5]
+File: figure/确定.pdf Graphic file (type pdf)
+<use figure/确定.pdf>
+ [6]
+File: figure/定期审核.pdf Graphic file (type pdf)
+<use figure/定期审核.pdf>
+) [7] (./main.bbl [8]) [9] (./main.aux) ) 
 Here is how much of TeX's memory you used:
- 12480 strings out of 476180
- 296540 string characters out of 5809555
- 647098 words of memory out of 5000000
- 33039 multiletter control sequences out of 15000+600000
- 475907 words of font info for 76 fonts, out of 8000000 for 9000
+ 13119 strings out of 476180
+ 305882 string characters out of 5809555
+ 647714 words of memory out of 5000000
+ 33638 multiletter control sequences out of 15000+600000
+ 479367 words of font info for 94 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  103i,6n,111p,1195b,315s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on main.pdf (4 pages).
+Output written on main.pdf (9 pages).

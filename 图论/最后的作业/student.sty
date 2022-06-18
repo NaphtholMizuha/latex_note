@@ -1,0 +1,113 @@
+% change this to adapt the header
+% -----------------------------------------------------------------------
+
+\ProvidesPackage{student}[16/02/2022 v1.0 custom anu student assignment stylefile]
+
+% Options
+\RequirePackage{tcolorbox}
+\RequirePackage{environ}
+
+\newcommand{\module}{Module}
+\newcommand{\university}{中山大学}
+\newcommand{\department}{计算机学院}
+\newcommand{\term}{}
+\newcommand{\membername}{}
+\newcommand{\memberuid}{}
+\newcommand{\instructor}{}
+
+\newcommand{\setmodule}[1]{\renewcommand{\module}{#1}}
+\newcommand{\setuniversity}[1]{\renewcommand{\university}{#1}}
+\newcommand{\setdepartment}[1]{\renewcommand{\department}{#1}}
+\newcommand{\setterm}[1]{\renewcommand{\term}{#1}}
+\newcommand{\setmembername}[1]{\renewcommand{\membername}{#1}}
+\newcommand{\setmemberuid}[1]{\renewcommand{\memberuid}{#1}}
+\newcommand{\setinstructor}[1]{\renewcommand{\instructor}{#1}}
+
+\setCJKmainfont[
+  Path = ../../fonts/ ,
+  Extension = .ttf ,
+  BoldFont = SimHei ,
+  ItalicFont = simkai ,
+]{SimSun}
+%
+% Create Problem Sections
+%
+
+
+\setcounter{secnumdepth}{0}
+\newcounter{partCounter}
+\newcounter{homeworkProblemCounter}
+\newcounter{questionCounter}
+\setcounter{homeworkProblemCounter}{1}
+\setcounter{questionCounter}{1}
+
+%
+% Homework Problem Environment
+%
+\newenvironment{problem}[1][-1]{
+	\ifnum#1>0
+	\setcounter{homeworkProblemCounter}{#1}
+	\fi
+	\section{问题 \arabic{homeworkProblemCounter}}
+	\addtocounter{homeworkProblemCounter}{1}
+	\setcounter{partCounter}{1}
+	\setcounter{questionCounter}{1}
+}{}
+
+\newenvironment{question}[1][-1]{
+	\ifnum#1>0
+	\setcounter{questionCounter}{#1}
+	\fi
+	\subsection{小问 \alph{questionCounter}}
+	\addtocounter{questionCounter}{1}
+	\setcounter{partCounter}{1}
+}{}
+
+% Standardkommandos in LaTeX2e
+\def\ensuremath#1{\relax\ifmmode #1\else $#1$\fi}
+
+\parindent 0pt
+\parskip   1ex plus 0.3ex minus 0.3ex
+%\parskip   6pt plus 2pt minus 2pt
+
+%\textheight 23.9cm
+\textheight 23.9cm
+\textwidth  16cm
+\topmargin  -2cm
+\leftmargin -1cm
+\advance\hsize by 2truecm\hoffset = -1.5truecm
+
+\frenchspacing
+\sloppy
+
+% -----------------------------------------------------------------------
+% Environments for formatting
+% -----------------------------------------------------------------------
+
+\usepackage{mdframed}
+\usepackage{etoolbox}
+
+\newcommand{\header}{%
+    {\bf \university} \@  \textbf{\department} \hfill \term  \\
+        学生姓名: \membername \hfill 指导老师: \instructor \\
+        学生学号: \memberuid \\
+        \begin{center}
+            {\bf{\huge\module}}
+        \end{center}
+        \begin{center}
+             {\bf{\Large\@title}}
+        \end{center}
+    }
+
+\newenvironment{answer}[1][]{
+        \par \medskip
+        {\textbf{#1回答}}
+        \par
+        \setcounter{equation}{0}
+        \begin{mdframed}[backgroundcolor=gray!10!white]
+    }
+    {
+        \end{mdframed}
+    }
+
+\newtheorem{lemma}{引理}
